@@ -28,14 +28,11 @@ class User {
       
       if (rows && rows.length > 0) {
         const user = rows[0];
-        // Define senha padrão hasheada para admin (tabela não tem senha)
+        // Define senha padrão hasheada para todos (tabela não tem senha)
+        // Hash para @Urban12345
+        user.password = '$2a$12$tASktt2bPCUoHH.Ym3T8oekVb2kMQLWO8H7WNpReea3Yu8Vkq8myW';
         if (email === 'mkt@urban.imb.br') {
-          // Hash fixo para @Gabriela12345
-          user.password = '$2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW';
           user.role_id = 1; // Admin
-        } else {
-          // Diretores não têm senha no banco - serão autenticados via outro método ou não terão login
-          user.password = '';
         }
         return user;
       }
@@ -44,16 +41,16 @@ class User {
     }
 
     // Fallback: retorna dados mockados para os emails permitidos
-    // Para admin, usa senha padrão hasheada (hash fixo para @Gabriela12345)
-    // Hash: $2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW
-    const adminPasswordHash = '$2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW';
+    // Todos usam a mesma senha padrão hasheada: @Urban12345
+    // Hash: $2a$12$tASktt2bPCUoHH.Ym3T8oekVb2kMQLWO8H7WNpReea3Yu8Vkq8myW
+    const defaultPasswordHash = '$2a$12$tASktt2bPCUoHH.Ym3T8oekVb2kMQLWO8H7WNpReea3Yu8Vkq8myW';
 
     const mockUsers = {
-      'jessica.vigolo@urban.imb.br': { id: 1, username: 'Jessica Vigolo', email: 'jessica.vigolo@urban.imb.br', role_id: 3, password: '' },
-      'luis.rosa@urban.imb.br': { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br', role_id: 3, password: '' },
-      'romario.lorenco@urban.imb.br': { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br', role_id: 3, password: '' },
-      'joao.menezes@urban.imb.br': { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br', role_id: 3, password: '' },
-      'mkt@urban.imb.br': { id: 5, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: adminPasswordHash }
+      'jessica.vigolo@urban.imb.br': { id: 1, username: 'Jessica Vigolo', email: 'jessica.vigolo@urban.imb.br', role_id: 3, password: defaultPasswordHash },
+      'luis.rosa@urban.imb.br': { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br', role_id: 3, password: defaultPasswordHash },
+      'romario.lorenco@urban.imb.br': { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br', role_id: 3, password: defaultPasswordHash },
+      'joao.menezes@urban.imb.br': { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br', role_id: 3, password: defaultPasswordHash },
+      'mkt@urban.imb.br': { id: 5, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: defaultPasswordHash }
     };
 
     return mockUsers[email] || null;
