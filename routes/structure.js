@@ -35,11 +35,11 @@ router.get('/', authMiddleware, async (req, res) => {
           Corretores c
         LEFT JOIN Departamentos d ON
           d.id = c.departamento
-        LEFT JOIN railway.Corretores g ON
+        LEFT JOIN Corretores g ON
           d.gerente = g.id_bitrix
-        LEFT JOIN railway.Departamentos direcao ON
+        LEFT JOIN Departamentos direcao ON
           d.diretoria = direcao.id
-        LEFT JOIN railway.Corretores dir ON
+        LEFT JOIN Corretores dir ON
           direcao.gerente = dir.id_bitrix
         WHERE
           c.status = 'Ativo'
@@ -51,7 +51,7 @@ router.get('/', authMiddleware, async (req, res) => {
       // Primeiro, vamos verificar se o diretor existe no banco
       try {
         const [dirCheck] = await db.execute(
-          `SELECT id_bitrix, email, nome, sobrenome FROM railway.Corretores WHERE LOWER(TRIM(email)) = LOWER(TRIM(?))`,
+          `SELECT id_bitrix, email, nome, sobrenome FROM Corretores WHERE LOWER(TRIM(email)) = LOWER(TRIM(?))`,
           [userEmail]
         );
         console.log('Verificando diretor no banco:', dirCheck.length, 'encontrados');
@@ -80,11 +80,11 @@ router.get('/', authMiddleware, async (req, res) => {
           Corretores c
         LEFT JOIN Departamentos d ON
           d.id = c.departamento
-        LEFT JOIN railway.Corretores g ON
+        LEFT JOIN Corretores g ON
           d.gerente = g.id_bitrix
-        LEFT JOIN railway.Departamentos direcao ON
+        LEFT JOIN Departamentos direcao ON
           d.diretoria = direcao.id
-        LEFT JOIN railway.Corretores dir ON
+        LEFT JOIN Corretores dir ON
           direcao.gerente = dir.id_bitrix
         WHERE
           c.status = 'Ativo'
@@ -110,8 +110,8 @@ router.get('/', authMiddleware, async (req, res) => {
         const [testRows] = await db.execute(`
           SELECT COUNT(*) as total FROM Corretores c
           LEFT JOIN Departamentos d ON d.id = c.departamento
-          LEFT JOIN railway.Departamentos direcao ON d.diretoria = direcao.id
-          LEFT JOIN railway.Corretores dir ON direcao.gerente = dir.id_bitrix
+          LEFT JOIN Departamentos direcao ON d.diretoria = direcao.id
+          LEFT JOIN Corretores dir ON direcao.gerente = dir.id_bitrix
           WHERE c.status = 'Ativo'
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
@@ -122,8 +122,8 @@ router.get('/', authMiddleware, async (req, res) => {
         const [dirRows] = await db.execute(`
           SELECT COUNT(*) as total FROM Corretores c
           LEFT JOIN Departamentos d ON d.id = c.departamento
-          LEFT JOIN railway.Departamentos direcao ON d.diretoria = direcao.id
-          LEFT JOIN railway.Corretores dir ON direcao.gerente = dir.id_bitrix
+          LEFT JOIN Departamentos direcao ON d.diretoria = direcao.id
+          LEFT JOIN Corretores dir ON direcao.gerente = dir.id_bitrix
           WHERE c.status = 'Ativo'
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
