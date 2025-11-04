@@ -2,18 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const CorretorMetrics = require('../models/CorretorMetrics');
-const fs = require('fs').promises;
-const path = require('path');
 
 // Sistema de pontos
 const PONTOS_VIDEO = 10;
 const PONTOS_VISITA = 20;
 const PONTOS_VENDA = 100;
-
-// Caminho do arquivo de ranking (usa DATA_PATH se configurado, senão usa ./data)
-const RANKING_PATH = process.env.DATA_PATH
-  ? path.join(process.env.DATA_PATH, 'ranking.json')
-  : path.join(__dirname, '..', 'data', 'ranking.json');
 
 const calculateRankingData = async () => {
   try {
@@ -241,16 +234,19 @@ const calculateRankingData = async () => {
       }
     };
 
-    // Save to JSON file
-    // Criar diretório se não existir
-    const dir = path.dirname(RANKING_PATH);
+    // Save to database cache
     try {
-      await fs.mkdir(dir, { recursive: true });
-    } catch (err) {
-      // Ignorar se já existir
+      // Limpar tabela e inserir novo cache (sempre mantém apenas 1 registro)
+      await db.query('TRUNCATE ranking_cache');
+      await db.query(
+        'INSERT INTO ranking_cache (data) VALUES (?)',
+        [JSON.stringify(rankingData)]
+      );
+      console.log('✅ Ranking cache saved to database');
+    } catch (dbError) {
+      console.error('⚠️  Error saving ranking cache to database:', dbError);
+      // Não falhar se não conseguir salvar cache, apenas logar o erro
     }
-
-    await fs.writeFile(RANKING_PATH, JSON.stringify(rankingData, null, 2));
 
     return rankingData;
   } catch (error) {
@@ -270,14 +266,26 @@ router.get('/ranking', async (req, res) => {
   }
 });
 
-// Get cached ranking data from JSON
+// Get cached ranking data from database
 router.get('/ranking/cached', async (req, res) => {
   try {
-    const data = await fs.readFile(RANKING_PATH, 'utf8');
-    res.json(JSON.parse(data));
+    const [rows] = await db.query('SELECT data FROM ranking_cache ORDER BY id DESC LIMIT 1');
+
+    if (rows.length > 0) {
+      // Parse JSON do banco de dados
+      const cachedData = typeof rows[0].data === 'string'
+        ? JSON.parse(rows[0].data)
+        : rows[0].data;
+      res.json(cachedData);
+    } else {
+      // Se não há cache, calcular fresh data
+      console.log('📊 No cached ranking found, calculating fresh data...');
+      const rankingData = await calculateRankingData();
+      res.json(rankingData);
+    }
   } catch (error) {
     console.error('Error reading cached data:', error);
-    // If no cached data, calculate fresh data
+    // Se erro ao ler cache, calcular fresh data
     const rankingData = await calculateRankingData();
     res.json(rankingData);
   }
