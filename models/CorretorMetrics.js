@@ -3,9 +3,12 @@ const db = require('../config/database');
 class CorretorMetrics {
   static async getAll() {
     try {
+      console.log('📊 [CorretorMetrics] Fetching all metrics from database...');
       const [rows] = await db.query(
         'SELECT email, videos, visitas, vendas, pontos, last_update, updated_by FROM corretor_metrics ORDER BY pontos DESC'
       );
+
+      console.log(`📊 [CorretorMetrics] Found ${rows.length} rows in corretor_metrics table`);
 
       // Converter para formato de objeto com email como chave (compatibilidade)
       const metrics = {};
@@ -21,9 +24,13 @@ class CorretorMetrics {
         };
       });
 
+      console.log(`📊 [CorretorMetrics] Converted to ${Object.keys(metrics).length} metric objects`);
       return metrics;
     } catch (error) {
-      console.error('Error getting all metrics:', error);
+      console.error('❌ [CorretorMetrics] Error getting all metrics:', error);
+      console.error('❌ [CorretorMetrics] Error message:', error.message);
+      console.error('❌ [CorretorMetrics] Error code:', error.code);
+      console.error('❌ [CorretorMetrics] Error stack:', error.stack);
       return {};
     }
   }

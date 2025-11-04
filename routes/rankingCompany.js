@@ -10,6 +10,8 @@ const PONTOS_VENDA = 100;
 
 const calculateRankingData = async () => {
   try {
+    console.log('📊 [RANKING] Starting ranking calculation...');
+
     // Datas do período atual (ano corrente)
     const now = new Date();
     const startDate = `${now.getFullYear()}-01-01`;
@@ -24,6 +26,8 @@ const calculateRankingData = async () => {
       'joao.menezes@urban.imb.br',
       'marcos.gasparini@urban.imb.br'
     ];
+
+    console.log('📊 [RANKING] Querying database for structure data...');
 
     // Query para buscar estrutura de corretores, gerentes e diretores
     const structureQuery = `
@@ -57,6 +61,7 @@ const calculateRankingData = async () => {
     `;
 
     const [structureRows] = await db.execute(structureQuery, ALLOWED_DIRECTORS);
+    console.log(`📊 [RANKING] Found ${structureRows.length} corretores in structure`);
 
     // TODO: Buscar dados de vídeos, visitas e vendas de cada corretor
     // Por enquanto, vamos usar uma estrutura que permite buscar esses dados
@@ -92,9 +97,11 @@ const calculateRankingData = async () => {
       }
     });
 
-    // Buscar dados de vídeos, visitas e vendas do JSON
+    // Buscar dados de vídeos, visitas e vendas do banco
+    console.log('📊 [RANKING] Fetching corretor metrics from database...');
     const allCorretorMetrics = await CorretorMetrics.getAll();
-    
+    console.log(`📊 [RANKING] Found metrics for ${Object.keys(allCorretorMetrics).length} corretores`);
+
     Object.keys(corretorStructure).forEach(emailKey => {
       const metrics = allCorretorMetrics[emailKey] || {
         videos: 0,
@@ -116,6 +123,7 @@ const calculateRankingData = async () => {
     });
 
     // Calcular top 15 corretores
+    console.log('📊 [RANKING] Calculating top corretores ranking...');
     const corretorRanking = Object.keys(corretorPoints)
       .filter(key => {
         const corretor = corretorStructure[key];
@@ -140,8 +148,10 @@ const calculateRankingData = async () => {
         visitas: corretor.visitas,
         vendas: corretor.vendas
       }));
+    console.log(`📊 [RANKING] Top corretores calculated: ${corretorRanking.length} positions`);
 
     // Calcular pontos de gerentes (soma dos corretores abaixo)
+    console.log('📊 [RANKING] Calculating gerentes ranking...');
     const gerentePoints = {};
     Object.keys(corretorPoints).forEach(key => {
       const corretor = corretorStructure[key];
@@ -177,8 +187,10 @@ const calculateRankingData = async () => {
         visitas: gerente.visitas,
         vendas: gerente.vendas
       }));
+    console.log(`📊 [RANKING] Top gerentes calculated: ${topGerentes.length} positions`);
 
     // Calcular pontos de diretores (soma dos corretores abaixo)
+    console.log('📊 [RANKING] Calculating diretores ranking...');
     const diretorPoints = {};
     Object.keys(corretorPoints).forEach(key => {
       const corretor = corretorStructure[key];
@@ -212,6 +224,7 @@ const calculateRankingData = async () => {
         visitas: diretor.visitas,
         vendas: diretor.vendas
       }));
+    console.log(`📊 [RANKING] Top diretores calculated: ${topDiretores.length} positions`);
 
     // Calcular total de vendas atingido
     const totalVendas = Object.values(corretorPoints)
@@ -219,6 +232,8 @@ const calculateRankingData = async () => {
 
     // Calcular progresso em relação à meta
     const progressPercentage = globalGoal > 0 ? Math.min((totalVendas / globalGoal) * 100, 100) : 0;
+
+    console.log(`📊 [RANKING] Total vendas: ${totalVendas}/${globalGoal} (${progressPercentage.toFixed(1)}%)`);
 
     const rankingData = {
       topCorretores: corretorRanking,
@@ -236,21 +251,27 @@ const calculateRankingData = async () => {
 
     // Save to database cache
     try {
+      console.log('📊 [RANKING] Saving cache to database...');
       // Limpar tabela e inserir novo cache (sempre mantém apenas 1 registro)
       await db.query('TRUNCATE ranking_cache');
       await db.query(
         'INSERT INTO ranking_cache (data) VALUES (?)',
         [JSON.stringify(rankingData)]
       );
-      console.log('✅ Ranking cache saved to database');
+      console.log('✅ [RANKING] Cache saved to database successfully');
     } catch (dbError) {
-      console.error('⚠️  Error saving ranking cache to database:', dbError);
+      console.error('⚠️  [RANKING] Error saving cache to database:', dbError);
+      console.error('⚠️  [RANKING] Error details:', dbError.message);
+      console.error('⚠️  [RANKING] Error stack:', dbError.stack);
       // Não falhar se não conseguir salvar cache, apenas logar o erro
     }
 
+    console.log('✅ [RANKING] Ranking calculation completed successfully');
     return rankingData;
   } catch (error) {
-    console.error('Error calculating ranking data:', error);
+    console.error('❌ [RANKING] Error calculating ranking data:', error);
+    console.error('❌ [RANKING] Error message:', error.message);
+    console.error('❌ [RANKING] Error stack:', error.stack);
     throw error;
   }
 };
@@ -258,20 +279,30 @@ const calculateRankingData = async () => {
 // Get ranking data
 router.get('/ranking', async (req, res) => {
   try {
+    console.log('🌐 [API] GET /ranking - Request received');
     const rankingData = await calculateRankingData();
+    console.log('🌐 [API] GET /ranking - Sending response');
     res.json(rankingData);
   } catch (error) {
-    console.error('Error fetching ranking:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('❌ [API] GET /ranking - Error:', error);
+    console.error('❌ [API] Error message:', error.message);
+    console.error('❌ [API] Error stack:', error.stack);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Failed to calculate ranking',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
 // Get cached ranking data from database
 router.get('/ranking/cached', async (req, res) => {
   try {
+    console.log('🌐 [API] GET /ranking/cached - Request received');
     const [rows] = await db.query('SELECT data FROM ranking_cache ORDER BY id DESC LIMIT 1');
 
     if (rows.length > 0) {
+      console.log('🌐 [API] GET /ranking/cached - Cache found, sending cached data');
       // Parse JSON do banco de dados
       const cachedData = typeof rows[0].data === 'string'
         ? JSON.parse(rows[0].data)
@@ -279,26 +310,41 @@ router.get('/ranking/cached', async (req, res) => {
       res.json(cachedData);
     } else {
       // Se não há cache, calcular fresh data
-      console.log('📊 No cached ranking found, calculating fresh data...');
+      console.log('📊 [API] GET /ranking/cached - No cache found, calculating fresh data...');
       const rankingData = await calculateRankingData();
       res.json(rankingData);
     }
   } catch (error) {
-    console.error('Error reading cached data:', error);
+    console.error('❌ [API] GET /ranking/cached - Error reading cache:', error);
+    console.error('❌ [API] Error message:', error.message);
     // Se erro ao ler cache, calcular fresh data
-    const rankingData = await calculateRankingData();
-    res.json(rankingData);
+    try {
+      const rankingData = await calculateRankingData();
+      res.json(rankingData);
+    } catch (calcError) {
+      console.error('❌ [API] GET /ranking/cached - Error calculating fallback:', calcError);
+      res.status(500).json({
+        error: 'Internal server error',
+        message: 'Failed to retrieve or calculate ranking data'
+      });
+    }
   }
 });
 
 // Force refresh ranking data
 router.post('/ranking/refresh', async (req, res) => {
   try {
+    console.log('🌐 [API] POST /ranking/refresh - Request received');
     const rankingData = await calculateRankingData();
+    console.log('🌐 [API] POST /ranking/refresh - Refresh completed');
     res.json({ message: 'Ranking data refreshed successfully', data: rankingData });
   } catch (error) {
-    console.error('Error refreshing ranking:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('❌ [API] POST /ranking/refresh - Error:', error);
+    console.error('❌ [API] Error message:', error.message);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to refresh ranking data'
+    });
   }
 });
 
