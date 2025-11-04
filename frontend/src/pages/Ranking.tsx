@@ -83,17 +83,17 @@ export const Ranking: React.FC = () => {
 
         {/* Main Layout */}
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2">
-          {/* Left: Top 15 Corretores - Aumentado em 10% (de col-span-8 para col-span-9) */}
+          {/* Left: Top 10 Corretores */}
           <div className="lg:col-span-9">
             <Card className="bg-white border-gray-200 shadow-lg h-full">
               <CardHeader className="pb-2 border-b border-gray-200">
                 <CardTitle className="text-base text-gray-900 flex items-center gap-1">
-                  🏆 Top 15 Corretores
+                  🏆 Top 10 Corretores
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
-                  {/* Primeira Coluna - Top 1-8 */}
+                  {/* Primeira Coluna - Top 1-5 */}
                   <div className="border-r border-gray-200">
                     <Table>
                       <TableHeader>
@@ -106,7 +106,7 @@ export const Ranking: React.FC = () => {
                       </TableHeader>
                       <TableBody>
                         {skeletonMode ? (
-                          Array.from({ length: 8 }).map((_, index) => (
+                          Array.from({ length: 5 }).map((_, index) => (
                             <TableRow key={`skeleton-1-${index}`} className="border-gray-100">
                               <TableCell colSpan={4}>
                                 <div className="h-16 bg-gray-200 rounded animate-pulse" />
@@ -115,10 +115,10 @@ export const Ranking: React.FC = () => {
                           ))
                         ) : (
                           <>
-                            {data.topCorretores.slice(0, 8).map((corretor) => (
+                            {data.topCorretores.slice(0, 5).map((corretor) => (
                               <CorretorTableRow key={corretor.position} corretor={corretor} />
                             ))}
-                            {Array.from({ length: Math.max(0, 8 - data.topCorretores.slice(0, 8).length) }).map((_, index) => (
+                            {Array.from({ length: Math.max(0, 5 - data.topCorretores.slice(0, 5).length) }).map((_, index) => (
                               <CorretorSkeletonRow key={`empty-1-${index}`} />
                             ))}
                           </>
@@ -127,7 +127,7 @@ export const Ranking: React.FC = () => {
                     </Table>
                   </div>
 
-                  {/* Segunda Coluna - Top 9-15 */}
+                  {/* Segunda Coluna - Top 6-10 */}
                   <div>
                     <Table>
                       <TableHeader>
@@ -140,7 +140,7 @@ export const Ranking: React.FC = () => {
                       </TableHeader>
                       <TableBody>
                         {skeletonMode ? (
-                          Array.from({ length: 7 }).map((_, index) => (
+                          Array.from({ length: 5 }).map((_, index) => (
                             <TableRow key={`skeleton-2-${index}`} className="border-gray-100">
                               <TableCell colSpan={4}>
                                 <div className="h-16 bg-gray-200 rounded animate-pulse" />
@@ -149,10 +149,10 @@ export const Ranking: React.FC = () => {
                           ))
                         ) : (
                           <>
-                            {data.topCorretores.slice(8, 15).map((corretor) => (
+                            {data.topCorretores.slice(5, 10).map((corretor) => (
                               <CorretorTableRow key={corretor.position} corretor={corretor} />
                             ))}
-                            {Array.from({ length: Math.max(0, 7 - data.topCorretores.slice(8, 15).length) }).map((_, index) => (
+                            {Array.from({ length: Math.max(0, 5 - data.topCorretores.slice(5, 10).length) }).map((_, index) => (
                               <CorretorSkeletonRow key={`empty-2-${index}`} />
                             ))}
                           </>
