@@ -42,7 +42,7 @@ router.get('/', authMiddleware, async (req, res) => {
         LEFT JOIN railway.Corretores dir ON
           direcao.gerente = dir.id_bitrix
         WHERE
-          c.status = 'Ativo'
+          c.status = 'true'
           AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
           AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
         ORDER BY corretor
@@ -87,7 +87,7 @@ router.get('/', authMiddleware, async (req, res) => {
         LEFT JOIN railway.Corretores dir ON
           direcao.gerente = dir.id_bitrix
         WHERE
-          c.status = 'Ativo'
+          c.status = 'true'
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
           AND LOWER(TRIM(dir.email)) = LOWER(TRIM(?))
@@ -112,7 +112,7 @@ router.get('/', authMiddleware, async (req, res) => {
           LEFT JOIN Departamentos d ON d.id = c.departamento
           LEFT JOIN railway.Departamentos direcao ON d.diretoria = direcao.id
           LEFT JOIN railway.Corretores dir ON direcao.gerente = dir.id_bitrix
-          WHERE c.status = 'Ativo'
+          WHERE c.status = 'true'
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
         `);
@@ -124,7 +124,7 @@ router.get('/', authMiddleware, async (req, res) => {
           LEFT JOIN Departamentos d ON d.id = c.departamento
           LEFT JOIN railway.Departamentos direcao ON d.diretoria = direcao.id
           LEFT JOIN railway.Corretores dir ON direcao.gerente = dir.id_bitrix
-          WHERE c.status = 'Ativo'
+          WHERE c.status = 'true'
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
           AND dir.email IS NOT NULL

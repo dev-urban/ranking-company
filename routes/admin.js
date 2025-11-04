@@ -36,7 +36,7 @@ router.get('/directors', async (req, res) => {
       LEFT JOIN railway.Corretores dir
         ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
       WHERE
-        c.status = 'Ativo'
+        c.status = 'true'
         AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
         AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
       ORDER BY corretor
