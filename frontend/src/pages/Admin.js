@@ -32,7 +32,7 @@ function Admin() {
   const loadDirectors = async () => {
     try {
       setLoading(true);
-      console.log('Iniciando busca de diretores...');
+      console.log('Iniciando busca de corretores...');
       console.log('Token:', authService.getToken());
 
       const response = await fetch('/api/admin/directors', {
@@ -47,30 +47,30 @@ function Admin() {
       if (!response.ok) {
         const errorData = await response.text();
         console.error('Erro na resposta:', errorData);
-        throw new Error(`Erro ao carregar diretores: ${response.status}`);
+        throw new Error(`Erro ao carregar corretores: ${response.status}`);
       }
 
       const data = await response.json();
       console.log('Dados recebidos:', data);
-      console.log('Diretores:', data.directors);
-      console.log('Quantidade de diretores:', data.directors?.length);
+      console.log('Corretores:', data.directors);
+      console.log('Quantidade de corretores:', data.directors?.length);
 
       if (data.directors && data.directors.length > 0) {
         setDirectors(data.directors);
         console.log('State directors atualizado com:', data.directors);
       } else {
-        console.warn('Nenhum diretor retornado da API');
+        console.warn('Nenhum corretor retornado da API');
         setDirectors([]);
       }
     } catch (error) {
-      console.error('Erro ao carregar diretores:', error);
-      setMessage('Erro ao carregar diretores');
+      console.error('Erro ao carregar corretores:', error);
+      setMessage('Erro ao carregar corretores');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleMetricChange = (directorId, field, value) => {
+  const handleMetricChange = (corretorId, field, value) => {
     // Permitir string vazia para poder apagar e redigitar
     let processedValue;
     if (value === '') {
@@ -80,29 +80,29 @@ function Admin() {
       processedValue = isNaN(parsed) ? '' : Math.max(0, parsed);
     }
 
-    setDirectors(prev => prev.map(director =>
-      director.id === directorId
+    setDirectors(prev => prev.map(corretor =>
+      corretor.id === corretorId
         ? {
-            ...director,
-            metrics: { ...director.metrics, [field]: processedValue }
+            ...corretor,
+            metrics: { ...corretor.metrics, [field]: processedValue }
           }
-        : director
+        : corretor
     ));
   };
 
-  const saveMetrics = async (directorId) => {
+  const saveMetrics = async (corretorId) => {
     try {
-      setSaving(prev => ({ ...prev, [directorId]: true }));
+      setSaving(prev => ({ ...prev, [corretorId]: true }));
       setMessage('');
 
-      const director = directors.find(d => d.id === directorId);
+      const corretor = directors.find(d => d.id === corretorId);
       const metrics = {
-        agendamentos: director.metrics.agendamentos === '' ? 0 : parseInt(director.metrics.agendamentos) || 0,
-        visitasRealizadas: director.metrics.visitasRealizadas === '' ? 0 : parseInt(director.metrics.visitasRealizadas) || 0,
-        contratosAssinados: director.metrics.contratosAssinados === '' ? 0 : parseInt(director.metrics.contratosAssinados) || 0
+        videos: corretor.metrics.videos === '' ? 0 : parseInt(corretor.metrics.videos) || 0,
+        visitas: corretor.metrics.visitas === '' ? 0 : parseInt(corretor.metrics.visitas) || 0,
+        vendas: corretor.metrics.vendas === '' ? 0 : parseInt(corretor.metrics.vendas) || 0
       };
 
-      const response = await fetch(`/api/admin/directors/${directorId}/metrics`, {
+      const response = await fetch(`/api/admin/directors/${corretorId}/metrics`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -115,27 +115,27 @@ function Admin() {
         throw new Error('Erro ao salvar métricas');
       }
 
-      setMessage(`Métricas de ${director.username} atualizadas com sucesso!`);
+      setMessage(`Métricas de ${corretor.username} atualizadas com sucesso!`);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Erro ao salvar métricas:', error);
       setMessage('Erro ao salvar métricas');
     } finally {
-      setSaving(prev => ({ ...prev, [directorId]: false }));
+      setSaving(prev => ({ ...prev, [corretorId]: false }));
     }
   };
 
   const calculatePoints = (metrics) => {
-    const agendamentos = metrics.agendamentos === '' ? 0 : parseInt(metrics.agendamentos) || 0;
-    const visitas = metrics.visitasRealizadas === '' ? 0 : parseInt(metrics.visitasRealizadas) || 0;
-    const contratos = metrics.contratosAssinados === '' ? 0 : parseInt(metrics.contratosAssinados) || 0;
+    const videos = metrics.videos === '' ? 0 : parseInt(metrics.videos) || 0;
+    const visitas = metrics.visitas === '' ? 0 : parseInt(metrics.visitas) || 0;
+    const vendas = metrics.vendas === '' ? 0 : parseInt(metrics.vendas) || 0;
 
-    const pontosAgendamentos = agendamentos * 5;
+    const pontosVideos = videos * 10;
     const pontosVisitas = visitas * 20;
-    const pontosContratos = contratos * 50;
-    const total = pontosAgendamentos + pontosVisitas + pontosContratos;
+    const pontosVendas = vendas * 100;
+    const total = pontosVideos + pontosVisitas + pontosVendas;
 
-    return { pontosAgendamentos, pontosVisitas, pontosContratos, total };
+    return { pontosVideos, pontosVisitas, pontosVendas, total };
   };
 
   console.log('Estado atual - loading:', loading);
@@ -165,7 +165,7 @@ function Admin() {
                 Painel Administrativo
               </h1>
               <p className="text-sm text-muted-foreground mt-1">
-                Gerencie as métricas dos diretores no ranking
+                Gerencie as métricas dos corretores no ranking
               </p>
             </div>
           </div>
@@ -196,38 +196,41 @@ function Admin() {
         <div className="grid gap-6">
           {console.log('Renderizando directors:', directors)}
           {directors && directors.length > 0 ? (
-            directors.map((director) => {
-              const points = calculatePoints(director.metrics);
-              const isSaving = saving[director.id];
-              console.log('Renderizando diretor:', director);
+            directors.map((corretor) => {
+              const points = calculatePoints(corretor.metrics);
+              const isSaving = saving[corretor.id];
+              console.log('Renderizando corretor:', corretor);
 
               return (
-                <Card key={`director-${director.id}`} className="border shadow-sm">
+                <Card key={`corretor-${corretor.id}`} className="border shadow-sm">
                 <CardHeader>
                   <CardTitle className="text-xl text-foreground font-semibold flex items-center gap-2">
                     <User className="h-5 w-5" />
-                    {director.username}
+                    {corretor.username}
                   </CardTitle>
-                  <p className="text-sm text-muted-foreground">{director.email}</p>
+                  <p className="text-sm text-muted-foreground">{corretor.email}</p>
+                  {corretor.gerente && (
+                    <p className="text-xs text-muted-foreground">Gerente: {corretor.gerente} | Diretor: {corretor.diretor}</p>
+                  )}
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
-                        Agendamentos (5 pts cada)
+                        Vídeos (10 pts cada)
                       </label>
                       <div className="space-y-2">
                         <Input
                           type="number"
-                          value={director.metrics.agendamentos}
-                          onChange={(e) => handleMetricChange(director.id, 'agendamentos', e.target.value)}
+                          value={corretor.metrics.videos}
+                          onChange={(e) => handleMetricChange(corretor.id, 'videos', e.target.value)}
                           min="0"
                           disabled={isSaving}
                           className="h-10"
                         />
                         <span className="text-xs text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200 block text-center">
-                          {points.pontosAgendamentos} pontos
+                          {points.pontosVideos} pontos
                         </span>
                       </div>
                     </div>
@@ -240,8 +243,8 @@ function Admin() {
                       <div className="space-y-2">
                         <Input
                           type="number"
-                          value={director.metrics.visitasRealizadas}
-                          onChange={(e) => handleMetricChange(director.id, 'visitasRealizadas', e.target.value)}
+                          value={corretor.metrics.visitas}
+                          onChange={(e) => handleMetricChange(corretor.id, 'visitas', e.target.value)}
                           min="0"
                           disabled={isSaving}
                           className="h-10"
@@ -255,19 +258,19 @@ function Admin() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground flex items-center gap-2">
                         <FileText className="h-4 w-4" />
-                        Contratos (50 pts cada)
+                        Vendas (100 pts cada)
                       </label>
                       <div className="space-y-2">
                         <Input
                           type="number"
-                          value={director.metrics.contratosAssinados}
-                          onChange={(e) => handleMetricChange(director.id, 'contratosAssinados', e.target.value)}
+                          value={corretor.metrics.vendas}
+                          onChange={(e) => handleMetricChange(corretor.id, 'vendas', e.target.value)}
                           min="0"
                           disabled={isSaving}
                           className="h-10"
                         />
                         <span className="text-xs text-purple-700 bg-purple-50 px-2 py-1 rounded-md border border-purple-200 block text-center">
-                          {points.pontosContratos} pontos
+                          {points.pontosVendas} pontos
                         </span>
                       </div>
                     </div>
@@ -285,7 +288,7 @@ function Admin() {
                       </Card>
 
                       <Button
-                        onClick={() => saveMetrics(director.id)}
+                        onClick={() => saveMetrics(corretor.id)}
                         disabled={isSaving}
                         className="w-full gap-2"
                       >
@@ -299,7 +302,7 @@ function Admin() {
             );
           })
           ) : (
-            <p className="text-center text-muted-foreground">Nenhum diretor para exibir</p>
+            <p className="text-center text-muted-foreground">Nenhum corretor para exibir</p>
           )}
         </div>
 
@@ -307,7 +310,7 @@ function Admin() {
           <Card className="border text-center p-8">
             <CardContent>
               <p className="text-muted-foreground">
-                Nenhum diretor encontrado para administrar.
+                Nenhum corretor encontrado para administrar.
               </p>
             </CardContent>
           </Card>
@@ -318,7 +321,7 @@ function Admin() {
             <CardContent className="pt-6">
               <div className="text-center text-sm text-muted-foreground">
                 💡 <strong>Nota:</strong> Como administradora, você não participa do ranking.
-                Esta página permite gerenciar as métricas dos 4 diretores que competem no ranking.
+                Esta página permite gerenciar as métricas dos corretores que competem no ranking.
               </div>
             </CardContent>
           </Card>
