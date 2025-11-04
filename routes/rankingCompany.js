@@ -12,9 +12,11 @@ const PONTOS_VENDA = 100;
 
 const calculateRankingData = async () => {
   try {
-    const startDate = process.env.START_DATE || '2025-01-01';
-    const endDate = process.env.END_DATE || '2025-12-31';
-    const globalGoal = parseInt(process.env.GLOBAL_GOAL) || 1000;
+    // Datas do período atual (ano corrente)
+    const now = new Date();
+    const startDate = `${now.getFullYear()}-01-01`;
+    const endDate = `${now.getFullYear()}-12-31`;
+    const globalGoal = 0; // Sem meta definida
 
     // Query para buscar estrutura de corretores, gerentes e diretores
     const structureQuery = `
@@ -189,9 +191,8 @@ const calculateRankingData = async () => {
     const totalAtingido = Object.values(corretorPoints)
       .reduce((sum, pontos) => sum + pontos.pontos, 0);
 
-    const progressPercentage = globalGoal > 0 
-      ? Math.round((totalAtingido / globalGoal) * 100 * 100) / 100 
-      : 0;
+    // Sem meta, progresso sempre 0
+    const progressPercentage = 0;
 
     const rankingData = {
       topCorretores: corretorRanking,
