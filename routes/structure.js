@@ -11,40 +11,80 @@ router.get('/', authMiddleware, async (req, res) => {
     // Se for admin, retorna todos os corretores. Se for diretor, filtra por email_diretor
     const isAdmin = userEmail === 'mkt@urban.imb.br';
     
-    const structureQuery = `
-      SELECT
-        CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
-        CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, '')) AS gerente,
-        CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, ''))) AS diretor,
-        IFNULL(c.email, '') AS email_corretor,
-        IFNULL(g.email, '') AS email_gerente,
-        IFNULL(dir.email, IFNULL(g.email, '')) AS email_diretor,
-        IFNULL(c.status, '') AS status_corretor,
-        UPPER(SUBSTRING_INDEX(IFNULL(c.email, ''), '@', 1)) AS corretor_map,
-        UPPER(SUBSTRING_INDEX(IFNULL(g.email, ''), '@', 1)) AS gerente_map,
-        UPPER(SUBSTRING_INDEX(IFNULL(dir.email, IFNULL(g.email, '')), '@', 1)) AS diretor_map,
-        IFNULL(c.cargo, '') AS cargo
-      FROM
-        Corretores c
-      LEFT JOIN Departamentos d ON
-        d.id = c.departamento
-      LEFT JOIN railway.Corretores g ON
-        d.gerente = g.id_bitrix
-      LEFT JOIN railway.Departamentos direcao ON
-        d.diretoria = direcao.id
-      LEFT JOIN Corretores dir 
-        ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
-      WHERE
-        c.status = 'Ativo'
-        AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
-        AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
-        ${isAdmin ? '' : 'AND LOWER(IFNULL(dir.email, IFNULL(g.email, \'\'))) = LOWER(?)'}
-      ORDER BY corretor
-    `;
+    console.log('Buscando estrutura - Email do usuário:', userEmail, 'É admin?', isAdmin);
+    
+    let structureQuery;
+    let queryParams = [];
+    
+    if (isAdmin) {
+      // Admin vê todos os corretores
+      structureQuery = `
+        SELECT
+          CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
+          CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, '')) AS gerente,
+          CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, ''))) AS diretor,
+          IFNULL(c.email, '') AS email_corretor,
+          IFNULL(g.email, '') AS email_gerente,
+          IFNULL(dir.email, IFNULL(g.email, '')) AS email_diretor,
+          IFNULL(c.status, '') AS status_corretor,
+          UPPER(SUBSTRING_INDEX(IFNULL(c.email, ''), '@', 1)) AS corretor_map,
+          UPPER(SUBSTRING_INDEX(IFNULL(g.email, ''), '@', 1)) AS gerente_map,
+          UPPER(SUBSTRING_INDEX(IFNULL(dir.email, IFNULL(g.email, '')), '@', 1)) AS diretor_map,
+          IFNULL(c.cargo, '') AS cargo
+        FROM
+          Corretores c
+        LEFT JOIN Departamentos d ON
+          d.id = c.departamento
+        LEFT JOIN railway.Corretores g ON
+          d.gerente = g.id_bitrix
+        LEFT JOIN railway.Departamentos direcao ON
+          d.diretoria = direcao.id
+        LEFT JOIN Corretores dir 
+          ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
+        WHERE
+          c.status = 'Ativo'
+          AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
+          AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
+        ORDER BY corretor
+      `;
+    } else {
+      // Diretor vê apenas seus corretores
+      structureQuery = `
+        SELECT
+          CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
+          CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, '')) AS gerente,
+          CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, ''))) AS diretor,
+          IFNULL(c.email, '') AS email_corretor,
+          IFNULL(g.email, '') AS email_gerente,
+          IFNULL(dir.email, IFNULL(g.email, '')) AS email_diretor,
+          IFNULL(c.status, '') AS status_corretor,
+          UPPER(SUBSTRING_INDEX(IFNULL(c.email, ''), '@', 1)) AS corretor_map,
+          UPPER(SUBSTRING_INDEX(IFNULL(g.email, ''), '@', 1)) AS gerente_map,
+          UPPER(SUBSTRING_INDEX(IFNULL(dir.email, IFNULL(g.email, '')), '@', 1)) AS diretor_map,
+          IFNULL(c.cargo, '') AS cargo
+        FROM
+          Corretores c
+        LEFT JOIN Departamentos d ON
+          d.id = c.departamento
+        LEFT JOIN railway.Corretores g ON
+          d.gerente = g.id_bitrix
+        LEFT JOIN railway.Departamentos direcao ON
+          d.diretoria = direcao.id
+        LEFT JOIN Corretores dir 
+          ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
+        WHERE
+          c.status = 'Ativo'
+          AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
+          AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
+          AND LOWER(IFNULL(dir.email, IFNULL(g.email, ''))) = LOWER(?)
+        ORDER BY corretor
+      `;
+      queryParams = [userEmail];
+    }
 
-    const [rows] = isAdmin 
-      ? await db.execute(structureQuery)
-      : await db.execute(structureQuery, [userEmail]);
+    console.log('Executando query com filtro para email:', userEmail);
+    const [rows] = await db.execute(structureQuery, queryParams);
+    console.log('Resultados encontrados:', rows.length);
 
     const corretores = rows
       .filter(row => row.email_corretor && row.email_corretor.trim() !== '')
