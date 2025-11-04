@@ -33,10 +33,10 @@ export const Ranking: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-orange-500 font-medium">Carregando dados...</p>
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-blue-500 font-medium">Carregando dados...</p>
         </div>
       </div>
     );
@@ -44,7 +44,7 @@ export const Ranking: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
           <div className="text-red-500 text-xl mb-4">Erro ao carregar dados</div>
           <p className="text-gray-600 mb-6">{error}</p>
@@ -56,25 +56,25 @@ export const Ranking: React.FC = () => {
   if (!data) return null;
 
   return (
-    <div className="min-h-screen p-1 md:p-2 bg-gray-50">
+    <div className="min-h-screen p-1 md:p-2 bg-white">
       <div className="w-full flex flex-col space-y-2">
         {/* Progress Bar - Meta de Vendas */}
-        <Card className={`bg-white border-orange-500/30 shadow-lg transition-all duration-1000 ${statsGlow ? 'shadow-orange-500/30 shadow-2xl border-orange-500/60' : ''}`}>
+        <Card className={`bg-white border-blue-500/30 shadow-lg transition-all duration-1000 ${statsGlow ? 'shadow-blue-500/30 shadow-2xl border-blue-500/60' : ''}`}>
           <CardContent className="p-2">
-            <h3 className="text-xs font-bold text-orange-600 mb-1 flex items-center gap-1">
+            <h3 className="text-xs font-bold text-blue-600 mb-1 flex items-center gap-1">
               <Target className="w-3 h-3" />
               Meta de Vendas
             </h3>
             <div className="space-y-1">
               <Progress
                 value={data.progressPercentage}
-                className="h-2 bg-gray-200 [&>div]:bg-orange-500"
+                className="h-2 bg-gray-200 [&>div]:bg-blue-500"
               />
               <div className="flex justify-between text-xs text-gray-700">
-                <span className="text-orange-600 font-bold">{data.totalVendas} vendas</span>
+                <span className="text-blue-600 font-bold">{data.totalVendas} vendas</span>
                 <span>{data.metaVendas} vendas (meta)</span>
               </div>
-              <div className="text-center text-sm font-bold text-orange-600">
+              <div className="text-center text-sm font-bold text-blue-600">
                 {data.progressPercentage.toFixed(1)}% da meta atingida
               </div>
             </div>
@@ -85,10 +85,10 @@ export const Ranking: React.FC = () => {
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2">
           {/* Left: Top 15 Corretores - Aumentado em 10% (de col-span-8 para col-span-9) */}
           <div className="lg:col-span-9">
-            <Card className="bg-white border-orange-500/30 shadow-lg h-full">
-              <CardHeader className="pb-2 border-b border-orange-300">
-                <CardTitle className="text-base text-orange-600 flex items-center gap-1">
-                  <div className="w-1.5 h-4 bg-orange-500 rounded-full" />
+            <Card className="bg-white border-blue-500/30 shadow-lg h-full">
+              <CardHeader className="pb-2 border-b border-blue-300">
+                <CardTitle className="text-base text-blue-600 flex items-center gap-1">
+                  <div className="w-1.5 h-4 bg-blue-500 rounded-full" />
                   🏆 Top 15 Corretores
                 </CardTitle>
               </CardHeader>
@@ -99,10 +99,10 @@ export const Ranking: React.FC = () => {
                     <Table>
                       <TableHeader>
                         <TableRow className="border-gray-200 hover:bg-transparent">
-                          <TableHead className="text-orange-600 font-bold">#</TableHead>
-                          <TableHead className="text-orange-600 font-bold">Corretor</TableHead>
-                          <TableHead className="text-orange-600 font-bold text-center">Métricas</TableHead>
-                          <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
+                          <TableHead className="text-blue-600 font-bold">#</TableHead>
+                          <TableHead className="text-blue-600 font-bold">Corretor</TableHead>
+                          <TableHead className="text-blue-600 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-blue-600 font-bold text-right">Pts</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -133,10 +133,10 @@ export const Ranking: React.FC = () => {
                     <Table>
                       <TableHeader>
                         <TableRow className="border-gray-200 hover:bg-transparent">
-                          <TableHead className="text-orange-600 font-bold">#</TableHead>
-                          <TableHead className="text-orange-600 font-bold">Corretor</TableHead>
-                          <TableHead className="text-orange-600 font-bold text-center">Métricas</TableHead>
-                          <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
+                          <TableHead className="text-blue-600 font-bold">#</TableHead>
+                          <TableHead className="text-blue-600 font-bold">Corretor</TableHead>
+                          <TableHead className="text-blue-600 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-blue-600 font-bold text-right">Pts</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -169,10 +169,10 @@ export const Ranking: React.FC = () => {
           {/* Right: Top 5 Gerentes and Top 5 Diretores - Reduzido de col-span-4 para col-span-3 */}
           <div className="lg:col-span-3 flex flex-col gap-2">
             {/* Top 5 Gerentes */}
-            <Card className="bg-white border-orange-500/30 shadow-lg">
-              <CardHeader className="pb-1 border-b border-orange-300">
-                <CardTitle className="text-xs text-orange-600 flex items-center gap-1">
-                  <div className="w-1 h-3 bg-orange-500 rounded-full" />
+            <Card className="bg-white border-blue-500/30 shadow-lg">
+              <CardHeader className="pb-1 border-b border-blue-300">
+                <CardTitle className="text-xs text-blue-600 flex items-center gap-1">
+                  <div className="w-1 h-3 bg-blue-500 rounded-full" />
                   🥇 Top 5 Gerentes
                 </CardTitle>
               </CardHeader>
@@ -180,9 +180,9 @@ export const Ranking: React.FC = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-gray-200 hover:bg-transparent">
-                      <TableHead className="text-orange-600 font-bold w-10">#</TableHead>
-                      <TableHead className="text-orange-600 font-bold">Gerente</TableHead>
-                      <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
+                      <TableHead className="text-blue-600 font-bold w-10">#</TableHead>
+                      <TableHead className="text-blue-600 font-bold">Gerente</TableHead>
+                      <TableHead className="text-blue-600 font-bold text-right">Pts</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -210,10 +210,10 @@ export const Ranking: React.FC = () => {
             </Card>
 
             {/* Top 5 Diretores */}
-            <Card className="bg-white border-orange-500/30 shadow-lg">
-              <CardHeader className="pb-1 border-b border-orange-300">
-                <CardTitle className="text-xs text-orange-600 flex items-center gap-1">
-                  <div className="w-1 h-3 bg-orange-500 rounded-full" />
+            <Card className="bg-white border-blue-500/30 shadow-lg">
+              <CardHeader className="pb-1 border-b border-blue-300">
+                <CardTitle className="text-xs text-blue-600 flex items-center gap-1">
+                  <div className="w-1 h-3 bg-blue-500 rounded-full" />
                   🏆 Top 5 Diretores
                 </CardTitle>
               </CardHeader>
@@ -221,9 +221,9 @@ export const Ranking: React.FC = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-gray-200 hover:bg-transparent">
-                      <TableHead className="text-orange-600 font-bold w-10">#</TableHead>
-                      <TableHead className="text-orange-600 font-bold">Diretor</TableHead>
-                      <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
+                      <TableHead className="text-blue-600 font-bold w-10">#</TableHead>
+                      <TableHead className="text-blue-600 font-bold">Diretor</TableHead>
+                      <TableHead className="text-blue-600 font-bold text-right">Pts</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -262,8 +262,8 @@ const CorretorTableRow = ({ corretor }: any) => {
     switch (position) {
       case 1: return "bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-l-yellow-500";
       case 2: return "bg-gradient-to-r from-gray-100 to-gray-200 border-l-4 border-l-gray-400";
-      case 3: return "bg-gradient-to-r from-orange-100 to-orange-200 border-l-4 border-l-orange-600";
-      default: return "hover:bg-gray-50";
+      case 3: return "bg-gradient-to-r from-blue-100 to-blue-200 border-l-4 border-l-blue-600";
+      default: return "hover:bg-white";
     }
   };
 
@@ -279,7 +279,7 @@ const CorretorTableRow = ({ corretor }: any) => {
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(corretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-6 h-6 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-xs font-bold text-orange-600">
+        <div className="w-6 h-6 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-xs font-bold text-blue-600">
           {getPositionIcon(corretor.position)}
         </div>
       </TableCell>
@@ -293,21 +293,21 @@ const CorretorTableRow = ({ corretor }: any) => {
       <TableCell className="text-center py-1">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center justify-center gap-0.5">
-            <Video className="w-2.5 h-2.5 text-orange-600" />
-            <span className="text-[10px] text-orange-600 font-bold">{corretor.videos || 0}</span>
+            <Video className="w-2.5 h-2.5 text-blue-600" />
+            <span className="text-[10px] text-blue-600 font-bold">{corretor.videos || 0}</span>
           </div>
           <div className="flex items-center justify-center gap-0.5">
-            <Building2 className="w-2.5 h-2.5 text-orange-600" />
-            <span className="text-[10px] text-orange-600 font-bold">{corretor.visitas || 0}</span>
+            <Building2 className="w-2.5 h-2.5 text-blue-600" />
+            <span className="text-[10px] text-blue-600 font-bold">{corretor.visitas || 0}</span>
           </div>
           <div className="flex items-center justify-center gap-0.5">
-            <DollarSign className="w-2.5 h-2.5 text-orange-600" />
-            <span className="text-[10px] text-orange-600 font-bold">{corretor.vendas || 0}</span>
+            <DollarSign className="w-2.5 h-2.5 text-blue-600" />
+            <span className="text-[10px] text-blue-600 font-bold">{corretor.vendas || 0}</span>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-sm font-bold text-orange-600">{corretor.pontos}</div>
+        <div className="text-sm font-bold text-blue-600">{corretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -319,8 +319,8 @@ const GerenteTableRow = ({ gerente }: any) => {
     switch (position) {
       case 1: return "bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-l-yellow-500";
       case 2: return "bg-gradient-to-r from-gray-100 to-gray-200 border-l-4 border-l-gray-400";
-      case 3: return "bg-gradient-to-r from-orange-100 to-orange-200 border-l-4 border-l-orange-600";
-      default: return "hover:bg-gray-50";
+      case 3: return "bg-gradient-to-r from-blue-100 to-blue-200 border-l-4 border-l-blue-600";
+      default: return "hover:bg-white";
     }
   };
 
@@ -336,7 +336,7 @@ const GerenteTableRow = ({ gerente }: any) => {
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(gerente.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-5 h-5 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-[10px] font-bold text-orange-600">
+        <div className="w-5 h-5 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-[10px] font-bold text-blue-600">
           {getPositionIcon(gerente.position)}
         </div>
       </TableCell>
@@ -347,22 +347,22 @@ const GerenteTableRow = ({ gerente }: any) => {
           {/* Métricas inline */}
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="flex items-center gap-0.5">
-              <Video className="w-2 h-2 text-orange-600" />
-              <span className="text-[9px] text-orange-600 font-bold">{gerente.videos || 0}</span>
+              <Video className="w-2 h-2 text-blue-600" />
+              <span className="text-[9px] text-blue-600 font-bold">{gerente.videos || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-2 h-2 text-orange-600" />
-              <span className="text-[9px] text-orange-600 font-bold">{gerente.visitas || 0}</span>
+              <Building2 className="w-2 h-2 text-blue-600" />
+              <span className="text-[9px] text-blue-600 font-bold">{gerente.visitas || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-2 h-2 text-orange-600" />
-              <span className="text-[9px] text-orange-600 font-bold">{gerente.vendas || 0}</span>
+              <DollarSign className="w-2 h-2 text-blue-600" />
+              <span className="text-[9px] text-blue-600 font-bold">{gerente.vendas || 0}</span>
             </div>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-xs font-bold text-orange-600">{gerente.pontos}</div>
+        <div className="text-xs font-bold text-blue-600">{gerente.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -374,8 +374,8 @@ const DiretorTableRow = ({ diretor }: any) => {
     switch (position) {
       case 1: return "bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-l-yellow-500";
       case 2: return "bg-gradient-to-r from-gray-100 to-gray-200 border-l-4 border-l-gray-400";
-      case 3: return "bg-gradient-to-r from-orange-100 to-orange-200 border-l-4 border-l-orange-600";
-      default: return "hover:bg-gray-50";
+      case 3: return "bg-gradient-to-r from-blue-100 to-blue-200 border-l-4 border-l-blue-600";
+      default: return "hover:bg-white";
     }
   };
 
@@ -391,7 +391,7 @@ const DiretorTableRow = ({ diretor }: any) => {
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(diretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-5 h-5 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-[10px] font-bold text-orange-600">
+        <div className="w-5 h-5 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-[10px] font-bold text-blue-600">
           {getPositionIcon(diretor.position)}
         </div>
       </TableCell>
@@ -401,22 +401,22 @@ const DiretorTableRow = ({ diretor }: any) => {
           {/* Métricas inline */}
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="flex items-center gap-0.5">
-              <Video className="w-2 h-2 text-orange-600" />
-              <span className="text-[9px] text-orange-600 font-bold">{diretor.videos || 0}</span>
+              <Video className="w-2 h-2 text-blue-600" />
+              <span className="text-[9px] text-blue-600 font-bold">{diretor.videos || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-2 h-2 text-orange-600" />
-              <span className="text-[9px] text-orange-600 font-bold">{diretor.visitas || 0}</span>
+              <Building2 className="w-2 h-2 text-blue-600" />
+              <span className="text-[9px] text-blue-600 font-bold">{diretor.visitas || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-2 h-2 text-orange-600" />
-              <span className="text-[9px] text-orange-600 font-bold">{diretor.vendas || 0}</span>
+              <DollarSign className="w-2 h-2 text-blue-600" />
+              <span className="text-[9px] text-blue-600 font-bold">{diretor.vendas || 0}</span>
             </div>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-xs font-bold text-orange-600">{diretor.pontos}</div>
+        <div className="text-xs font-bold text-blue-600">{diretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
