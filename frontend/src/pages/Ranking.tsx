@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { RefreshCw, Target, TrendingUp, Calendar, Video, Building2, DollarSign } from 'lucide-react';
+import { RefreshCw, Target, Video, Building2, DollarSign } from 'lucide-react';
 import { useRanking } from '../hooks/useRanking';
 import { formatDate } from '../lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { RankingCardSkeleton } from '../components/RankingCardSkeleton';
 import { Progress } from '../components/ui/progress';
 
 export const Ranking: React.FC = () => {
