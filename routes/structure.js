@@ -39,8 +39,8 @@ router.get('/', authMiddleware, async (req, res) => {
           d.gerente = g.id_bitrix
         LEFT JOIN railway.Departamentos direcao ON
           d.diretoria = direcao.id
-        LEFT JOIN Corretores dir 
-          ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
+        LEFT JOIN railway.Corretores dir ON
+          direcao.gerente = dir.id_bitrix
         WHERE
           c.status = 'Ativo'
           AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
@@ -70,13 +70,13 @@ router.get('/', authMiddleware, async (req, res) => {
           d.gerente = g.id_bitrix
         LEFT JOIN railway.Departamentos direcao ON
           d.diretoria = direcao.id
-        LEFT JOIN Corretores dir 
-          ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
+        LEFT JOIN railway.Corretores dir ON
+          direcao.gerente = dir.id_bitrix
         WHERE
           c.status = 'Ativo'
           AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
           AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
-          AND LOWER(IFNULL(dir.email, IFNULL(g.email, ''))) = LOWER(?)
+          AND dir.email = ?
         ORDER BY corretor
       `;
       queryParams = [userEmail];
