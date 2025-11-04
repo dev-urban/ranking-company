@@ -48,6 +48,20 @@ router.get('/', authMiddleware, async (req, res) => {
         ORDER BY corretor
       `;
     } else {
+      // Primeiro, vamos verificar se o diretor existe no banco
+      try {
+        const [dirCheck] = await db.execute(
+          `SELECT id_bitrix, email, nome, sobrenome FROM railway.Corretores WHERE LOWER(TRIM(email)) = LOWER(TRIM(?))`,
+          [userEmail]
+        );
+        console.log('Verificando diretor no banco:', dirCheck.length, 'encontrados');
+        if (dirCheck.length > 0) {
+          console.log('Diretor encontrado:', JSON.stringify(dirCheck[0], null, 2));
+        }
+      } catch (err) {
+        console.error('Erro ao verificar diretor:', err);
+      }
+
       // Diretor vê apenas seus corretores - usando query simplificada que funciona
       structureQuery = `
         SELECT
@@ -76,7 +90,7 @@ router.get('/', authMiddleware, async (req, res) => {
           c.status = 'Ativo'
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
           AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
-          AND dir.email = ?
+          AND LOWER(TRIM(dir.email)) = LOWER(TRIM(?))
         ORDER BY corretor
       `;
       queryParams = [userEmail];
@@ -90,6 +104,36 @@ router.get('/', authMiddleware, async (req, res) => {
     
     if (rows.length > 0) {
       console.log('Primeiro resultado:', JSON.stringify(rows[0], null, 2));
+    } else {
+      // Vamos tentar verificar se há corretores sem o filtro de diretor
+      try {
+        const [testRows] = await db.execute(`
+          SELECT COUNT(*) as total FROM Corretores c
+          LEFT JOIN Departamentos d ON d.id = c.departamento
+          LEFT JOIN railway.Departamentos direcao ON d.diretoria = direcao.id
+          LEFT JOIN railway.Corretores dir ON direcao.gerente = dir.id_bitrix
+          WHERE c.status = 'Ativo'
+          AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
+          AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
+        `);
+        console.log('Total de corretores ativos:', testRows[0]?.total);
+        
+        // Verificar quantos têm diretor com esse email
+        const [dirRows] = await db.execute(`
+          SELECT COUNT(*) as total FROM Corretores c
+          LEFT JOIN Departamentos d ON d.id = c.departamento
+          LEFT JOIN railway.Departamentos direcao ON d.diretoria = direcao.id
+          LEFT JOIN railway.Corretores dir ON direcao.gerente = dir.id_bitrix
+          WHERE c.status = 'Ativo'
+          AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
+          AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
+          AND dir.email IS NOT NULL
+          AND LOWER(TRIM(dir.email)) = LOWER(TRIM(?))
+        `, [userEmail]);
+        console.log('Corretores com diretor', userEmail, ':', dirRows[0]?.total);
+      } catch (err) {
+        console.error('Erro ao verificar totais:', err);
+      }
     }
 
     const corretores = rows
