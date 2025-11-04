@@ -12,8 +12,40 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-app.use(cors());
+// Configuração de CORS para permitir requisições do frontend
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Lista de origens permitidas
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:5000',
+      'https://ranking-company.urban.imb.br',
+      'https://rankingfelix-copy-production.up.railway.app'
+    ];
+
+    // Permitir requisições sem origin (como Postman, curl, etc)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('⚠️  CORS blocked origin:', origin);
+      callback(null, true); // Por enquanto permitir todas, mas logar
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Middleware de logging para debug
+app.use((req, res, next) => {
+  console.log(`📡 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'no origin'}`);
+  next();
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/metrics', metricsRoutes);
