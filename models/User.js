@@ -15,50 +15,62 @@ class User {
     }
 
     try {
-      // Tenta buscar da tabela Corretores (se tiver as colunas necessárias)
+      // Tenta buscar da tabela Corretores (incluindo senha se existir)
       const [rows] = await db.execute(
         `SELECT 
           id_bitrix as id, 
           CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username, 
           email,
           3 as role_id,
-          '' as password
+          IFNULL(password, '') as password
         FROM Corretores WHERE email = ?`,
         [email]
       );
       
       if (rows && rows.length > 0) {
-        return rows[0];
+        const user = rows[0];
+        // Se não tem senha no banco e é admin, usa senha padrão hasheada
+        if (!user.password && email === 'mkt@urban.imb.br') {
+          // Hash fixo para @Gabriela12345
+          user.password = '$2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW';
+        }
+        return user;
       }
     } catch (error) {
       console.log('Erro ao buscar usuário da tabela Corretores:', error.message);
     }
 
     // Fallback: retorna dados mockados para os emails permitidos
+    // Para admin, usa senha padrão hasheada (hash fixo para @Gabriela12345)
+    // Hash: $2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW
+    const adminPasswordHash = '$2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW';
+
     const mockUsers = {
       'jessica.vigolo@urban.imb.br': { id: 1, username: 'Jessica Vigolo', email: 'jessica.vigolo@urban.imb.br', role_id: 3, password: '' },
       'luis.rosa@urban.imb.br': { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br', role_id: 3, password: '' },
       'romario.lorenco@urban.imb.br': { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br', role_id: 3, password: '' },
       'joao.menezes@urban.imb.br': { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br', role_id: 3, password: '' },
-      'mkt@urban.imb.br': { id: 5, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: '' }
+      'mkt@urban.imb.br': { id: 5, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: adminPasswordHash }
     };
 
     return mockUsers[email] || null;
   }
 
   static async validatePassword(password, hashedPassword) {
-    // Para compatibilidade com senhas hasheadas pelo PHP password_hash()
-    const bcrypt = require('bcryptjs');
-
-    // Primeiro tenta verificar com bcrypt (caso seja uma senha nova)
-    if (hashedPassword.startsWith('$2')) {
-      return bcrypt.compare(password, hashedPassword);
+    // Se não tem senha hasheada, retorna false
+    if (!hashedPassword || hashedPassword === '') {
+      return false;
     }
 
-    // Se não for bcrypt, pode ser password_hash do PHP
-    // Como não temos acesso direto ao password_verify do PHP no Node.js,
-    // vamos assumir que as senhas serão migradas para bcrypt
-    return bcrypt.compare(password, hashedPassword);
+    const bcrypt = require('bcryptjs');
+
+    // Tenta verificar com bcrypt
+    if (hashedPassword.startsWith('$2')) {
+      return await bcrypt.compare(password, hashedPassword);
+    }
+
+    // Se não for bcrypt, retorna false
+    return false;
   }
 
   static async getAllDirectors() {
