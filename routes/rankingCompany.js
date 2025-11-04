@@ -10,6 +10,11 @@ const PONTOS_VIDEO = 10;
 const PONTOS_VISITA = 20;
 const PONTOS_VENDA = 100;
 
+// Caminho do arquivo de ranking (usa DATA_PATH se configurado, senão usa ./data)
+const RANKING_PATH = process.env.DATA_PATH
+  ? path.join(process.env.DATA_PATH, 'ranking.json')
+  : path.join(__dirname, '..', 'data', 'ranking.json');
+
 const calculateRankingData = async () => {
   try {
     // Datas do período atual (ano corrente)
@@ -237,8 +242,15 @@ const calculateRankingData = async () => {
     };
 
     // Save to JSON file
-    const dataPath = path.join(__dirname, '../data/ranking.json');
-    await fs.writeFile(dataPath, JSON.stringify(rankingData, null, 2));
+    // Criar diretório se não existir
+    const dir = path.dirname(RANKING_PATH);
+    try {
+      await fs.mkdir(dir, { recursive: true });
+    } catch (err) {
+      // Ignorar se já existir
+    }
+
+    await fs.writeFile(RANKING_PATH, JSON.stringify(rankingData, null, 2));
 
     return rankingData;
   } catch (error) {
@@ -261,8 +273,7 @@ router.get('/ranking', async (req, res) => {
 // Get cached ranking data from JSON
 router.get('/ranking/cached', async (req, res) => {
   try {
-    const dataPath = path.join(__dirname, '../data/ranking.json');
-    const data = await fs.readFile(dataPath, 'utf8');
+    const data = await fs.readFile(RANKING_PATH, 'utf8');
     res.json(JSON.parse(data));
   } catch (error) {
     console.error('Error reading cached data:', error);

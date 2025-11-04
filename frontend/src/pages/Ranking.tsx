@@ -4,6 +4,7 @@ import { useRanking } from '../hooks/useRanking';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Progress } from '../components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
+import { Skeleton } from '../components/ui/skeleton';
 
 export const Ranking: React.FC = () => {
   const { data, loading, error } = useRanking();
@@ -114,9 +115,14 @@ export const Ranking: React.FC = () => {
                             </TableRow>
                           ))
                         ) : (
-                          data.topCorretores.slice(0, 8).map((corretor) => (
-                            <CorretorTableRow key={corretor.position} corretor={corretor} />
-                          ))
+                          <>
+                            {data.topCorretores.slice(0, 8).map((corretor) => (
+                              <CorretorTableRow key={corretor.position} corretor={corretor} />
+                            ))}
+                            {Array.from({ length: Math.max(0, 8 - data.topCorretores.slice(0, 8).length) }).map((_, index) => (
+                              <CorretorSkeletonRow key={`empty-1-${index}`} />
+                            ))}
+                          </>
                         )}
                       </TableBody>
                     </Table>
@@ -143,9 +149,14 @@ export const Ranking: React.FC = () => {
                             </TableRow>
                           ))
                         ) : (
-                          data.topCorretores.slice(8, 15).map((corretor) => (
-                            <CorretorTableRow key={corretor.position} corretor={corretor} />
-                          ))
+                          <>
+                            {data.topCorretores.slice(8, 15).map((corretor) => (
+                              <CorretorTableRow key={corretor.position} corretor={corretor} />
+                            ))}
+                            {Array.from({ length: Math.max(0, 7 - data.topCorretores.slice(8, 15).length) }).map((_, index) => (
+                              <CorretorSkeletonRow key={`empty-2-${index}`} />
+                            ))}
+                          </>
                         )}
                       </TableBody>
                     </Table>
@@ -184,9 +195,14 @@ export const Ranking: React.FC = () => {
                         </TableRow>
                       ))
                     ) : (
-                      data.topGerentes.map((gerente) => (
-                        <GerenteTableRow key={gerente.position} gerente={gerente} />
-                      ))
+                      <>
+                        {data.topGerentes.map((gerente) => (
+                          <GerenteTableRow key={gerente.position} gerente={gerente} />
+                        ))}
+                        {Array.from({ length: Math.max(0, 5 - data.topGerentes.length) }).map((_, index) => (
+                          <GerenteSkeletonRow key={`empty-gerente-${index}`} />
+                        ))}
+                      </>
                     )}
                   </TableBody>
                 </Table>
@@ -220,9 +236,14 @@ export const Ranking: React.FC = () => {
                         </TableRow>
                       ))
                     ) : (
-                      data.topDiretores?.map((diretor) => (
-                        <DiretorTableRow key={diretor.position} diretor={diretor} />
-                      ))
+                      <>
+                        {data.topDiretores?.map((diretor) => (
+                          <DiretorTableRow key={diretor.position} diretor={diretor} />
+                        ))}
+                        {Array.from({ length: Math.max(0, 5 - (data.topDiretores?.length || 0)) }).map((_, index) => (
+                          <DiretorSkeletonRow key={`empty-diretor-${index}`} />
+                        ))}
+                      </>
                     )}
                   </TableBody>
                 </Table>
@@ -396,6 +417,75 @@ const DiretorTableRow = ({ diretor }: any) => {
       </TableCell>
       <TableCell className="text-right py-1">
         <div className="text-xs font-bold text-orange-500">{diretor.pontos}</div>
+      </TableCell>
+    </TableRow>
+  );
+};
+
+// Componente Skeleton para Corretor
+const CorretorSkeletonRow = () => {
+  return (
+    <TableRow className="border-orange-500/10">
+      <TableCell className="w-8 py-1">
+        <Skeleton className="w-6 h-6 rounded-full bg-zinc-800/50" />
+      </TableCell>
+      <TableCell className="py-1">
+        <div className="space-y-1">
+          <Skeleton className="h-3 w-24 bg-zinc-800/50" />
+          <Skeleton className="h-2 w-20 bg-zinc-800/50" />
+          <Skeleton className="h-2 w-20 bg-zinc-800/50" />
+        </div>
+      </TableCell>
+      <TableCell className="text-center py-1">
+        <div className="flex flex-col gap-0.5 items-center">
+          <Skeleton className="h-2.5 w-8 bg-zinc-800/50" />
+          <Skeleton className="h-2.5 w-8 bg-zinc-800/50" />
+          <Skeleton className="h-2.5 w-8 bg-zinc-800/50" />
+        </div>
+      </TableCell>
+      <TableCell className="text-right py-1">
+        <Skeleton className="h-4 w-8 ml-auto bg-zinc-800/50" />
+      </TableCell>
+    </TableRow>
+  );
+};
+
+// Componente Skeleton para Gerente
+const GerenteSkeletonRow = () => {
+  return (
+    <TableRow className="border-orange-500/10">
+      <TableCell className="w-8 py-1">
+        <Skeleton className="w-5 h-5 rounded-full bg-zinc-800/50" />
+      </TableCell>
+      <TableCell className="py-1">
+        <div className="space-y-1">
+          <Skeleton className="h-3 w-24 bg-zinc-800/50" />
+          <Skeleton className="h-2 w-20 bg-zinc-800/50" />
+          <Skeleton className="h-2 w-16 bg-zinc-800/50" />
+        </div>
+      </TableCell>
+      <TableCell className="text-right py-1">
+        <Skeleton className="h-3 w-8 ml-auto bg-zinc-800/50" />
+      </TableCell>
+    </TableRow>
+  );
+};
+
+// Componente Skeleton para Diretor
+const DiretorSkeletonRow = () => {
+  return (
+    <TableRow className="border-orange-500/10">
+      <TableCell className="w-8 py-1">
+        <Skeleton className="w-5 h-5 rounded-full bg-zinc-800/50" />
+      </TableCell>
+      <TableCell className="py-1">
+        <div className="space-y-1">
+          <Skeleton className="h-3 w-24 bg-zinc-800/50" />
+          <Skeleton className="h-2 w-16 bg-zinc-800/50" />
+        </div>
+      </TableCell>
+      <TableCell className="text-right py-1">
+        <Skeleton className="h-3 w-8 ml-auto bg-zinc-800/50" />
       </TableCell>
     </TableRow>
   );
