@@ -20,9 +20,9 @@ router.get('/', authMiddleware, async (req, res) => {
       // Admin vê todos os corretores
       structureQuery = `
         SELECT
-          CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
-          CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, '')) AS gerente,
-          CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, ''))) AS diretor,
+          TRIM(CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, ''))) AS corretor,
+          TRIM(CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, ''))) AS gerente,
+          TRIM(CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, '')))) AS diretor,
           IFNULL(c.email, '') AS email_corretor,
           IFNULL(g.email, '') AS email_gerente,
           IFNULL(dir.email, IFNULL(g.email, '')) AS email_diretor,
@@ -65,9 +65,9 @@ router.get('/', authMiddleware, async (req, res) => {
       // Diretor vê apenas seus corretores - usando query simplificada que funciona
       structureQuery = `
         SELECT
-          CONCAT(c.nome, ' ', c.sobrenome) AS corretor,
-          CONCAT(g.nome, ' ', g.sobrenome) AS gerente,
-          CONCAT(dir.nome, ' ', dir.sobrenome) AS diretor,
+          TRIM(CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, ''))) AS corretor,
+          TRIM(CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, ''))) AS gerente,
+          TRIM(CONCAT(IFNULL(dir.nome, ''), ' ', IFNULL(dir.sobrenome, ''))) AS diretor,
           c.email AS email_corretor,
           g.email AS email_gerente,
           dir.email AS email_diretor,

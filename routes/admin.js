@@ -17,9 +17,9 @@ router.get('/directors', async (req, res) => {
     // Buscar estrutura de corretores
     const structureQuery = `
       SELECT
-        CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
-        CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, '')) AS gerente,
-        CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, ''))) AS diretor,
+        TRIM(CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, ''))) AS corretor,
+        TRIM(CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, ''))) AS gerente,
+        TRIM(CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, '')))) AS diretor,
         IFNULL(c.email, '') AS email_corretor,
         IFNULL(g.email, '') AS email_gerente,
         IFNULL(dir.email, IFNULL(g.email, '')) AS email_diretor,

@@ -31,7 +31,7 @@ class CorretorMetrics {
   static async update(email, data, updatedBy) {
     const metrics = await this.getAll();
     const emailKey = email.toLowerCase().trim();
-    
+
     metrics[emailKey] = {
       videos: parseInt(data.videos) || 0,
       visitas: parseInt(data.visitas) || 0,
@@ -39,6 +39,14 @@ class CorretorMetrics {
       lastUpdate: new Date().toISOString(),
       updatedBy: updatedBy || 'system'
     };
+
+    // Criar diretório se não existir
+    const dir = path.dirname(this.metricsPath);
+    try {
+      await fs.mkdir(dir, { recursive: true });
+    } catch (err) {
+      // Ignorar se já existir
+    }
 
     await fs.writeFile(this.metricsPath, JSON.stringify(metrics, null, 2));
     return metrics[emailKey];
