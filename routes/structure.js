@@ -6,6 +6,11 @@ const db = require('../config/database');
 // Buscar estrutura de corretores, gerentes e diretores
 router.get('/', authMiddleware, async (req, res) => {
   try {
+    const userEmail = req.user.email;
+    
+    // Se for admin, retorna todos os corretores. Se for diretor, filtra por email_diretor
+    const isAdmin = userEmail === 'mkt@urban.imb.br';
+    
     const structureQuery = `
       SELECT
         CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
@@ -33,10 +38,13 @@ router.get('/', authMiddleware, async (req, res) => {
         c.status = 'Ativo'
         AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
         AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
+        ${isAdmin ? '' : 'AND LOWER(IFNULL(dir.email, IFNULL(g.email, \'\'))) = LOWER(?)'}
       ORDER BY corretor
     `;
 
-    const [rows] = await db.execute(structureQuery);
+    const [rows] = isAdmin 
+      ? await db.execute(structureQuery)
+      : await db.execute(structureQuery, [userEmail]);
 
     const corretores = rows
       .filter(row => row.email_corretor && row.email_corretor.trim() !== '')
