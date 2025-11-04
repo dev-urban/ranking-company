@@ -13,14 +13,9 @@ export const useRanking = () => {
       setLoading(true);
       setError(null);
 
-      // Try to use ranking-select-main API first, fallback to main ranking API
+      // Use ranking company API
       const endpoint = useCache ? '/dashboard/ranking/cached' : '/dashboard/ranking';
-      let response = await fetch(`${API_URL}${endpoint}`);
-      
-      // If not found, try main ranking API
-      if (!response.ok && response.status === 404) {
-        response = await fetch(`${API_URL}/ranking`);
-      }
+      const response = await fetch(`${API_URL}${endpoint}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch ranking data');
@@ -39,25 +34,14 @@ export const useRanking = () => {
     try {
       setLoading(true);
       const timestamp = new Date().getTime();
-      // Try ranking-select-main refresh endpoint first
-      let response = await fetch(`${API_URL}/dashboard/ranking/refresh?t=${timestamp}`, {
+      // Use ranking company refresh endpoint
+      const response = await fetch(`${API_URL}/dashboard/ranking/refresh?t=${timestamp}`, {
         method: 'POST',
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache'
         }
       });
-      
-      // If not found, try main ranking API
-      if (!response.ok && response.status === 404) {
-        response = await fetch(`${API_URL}/ranking?t=${timestamp}`, {
-          method: 'GET',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        });
-      }
 
       if (!response.ok) {
         throw new Error('Failed to refresh ranking data');
@@ -81,7 +65,7 @@ export const useRanking = () => {
     const interval = setInterval(async () => {
       try {
         const timestamp = new Date().getTime();
-        const response = await fetch(`${API_URL}/ranking?t=${timestamp}`, {
+        const response = await fetch(`${API_URL}/dashboard/ranking/cached?t=${timestamp}`, {
           method: 'GET',
           headers: {
             'Cache-Control': 'no-cache',

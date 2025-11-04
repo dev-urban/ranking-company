@@ -14,11 +14,36 @@ class User {
       return null;
     }
 
-    const [rows] = await db.execute(
-      'SELECT id, username, password, role_id, email FROM users WHERE email = ?',
-      [email]
-    );
-    return rows[0];
+    try {
+      // Tenta buscar da tabela Corretores (se tiver as colunas necessárias)
+      const [rows] = await db.execute(
+        `SELECT 
+          id_bitrix as id, 
+          CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username, 
+          email,
+          3 as role_id,
+          '' as password
+        FROM Corretores WHERE email = ?`,
+        [email]
+      );
+      
+      if (rows && rows.length > 0) {
+        return rows[0];
+      }
+    } catch (error) {
+      console.log('Erro ao buscar usuário da tabela Corretores:', error.message);
+    }
+
+    // Fallback: retorna dados mockados para os emails permitidos
+    const mockUsers = {
+      'jessica.vigolo@urban.imb.br': { id: 1, username: 'Jessica Vigolo', email: 'jessica.vigolo@urban.imb.br', role_id: 3, password: '' },
+      'luis.rosa@urban.imb.br': { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br', role_id: 3, password: '' },
+      'romario.lorenco@urban.imb.br': { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br', role_id: 3, password: '' },
+      'joao.menezes@urban.imb.br': { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br', role_id: 3, password: '' },
+      'mkt@urban.imb.br': { id: 5, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: '' }
+    };
+
+    return mockUsers[email] || null;
   }
 
   static async validatePassword(password, hashedPassword) {
@@ -46,10 +71,14 @@ class User {
     ];
 
     try {
-      // Tenta buscar do banco MySQL (produção)
+      // Tenta buscar da tabela Corretores
       const placeholders = directorEmails.map(() => '?').join(',');
       const [rows] = await db.execute(
-        `SELECT id, username, email FROM users WHERE email IN (${placeholders})`,
+        `SELECT 
+          id_bitrix as id, 
+          CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username, 
+          email
+        FROM Corretores WHERE email IN (${placeholders})`,
         directorEmails
       );
 
@@ -62,10 +91,10 @@ class User {
 
     // Fallback para dados fixos (desenvolvimento ou erro no DB)
     return [
-      { id: 1, username: 'Jessica', email: 'jessica.vigolo@urban.imb.br' },
-      { id: 2, username: 'Luis', email: 'luis.rosa@urban.imb.br' },
-      { id: 3, username: 'Romário', email: 'romario.lorenco@urban.imb.br' },
-      { id: 4, username: 'João', email: 'joao.menezes@urban.imb.br' }
+      { id: 1, username: 'Jessica Vigolo', email: 'jessica.vigolo@urban.imb.br' },
+      { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br' },
+      { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br' },
+      { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br' }
     ];
   }
 
@@ -79,12 +108,21 @@ class User {
       'mkt@urban.imb.br'
     ];
 
-    const placeholders = allowedEmails.map(() => '?').join(',');
-    const [rows] = await db.execute(
-      `SELECT id, username, email FROM users WHERE email IN (${placeholders})`,
-      allowedEmails
-    );
-    return rows;
+    try {
+      const placeholders = allowedEmails.map(() => '?').join(',');
+      const [rows] = await db.execute(
+        `SELECT 
+          id_bitrix as id, 
+          CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username, 
+          email
+        FROM Corretores WHERE email IN (${placeholders})`,
+        allowedEmails
+      );
+      return rows || [];
+    } catch (error) {
+      console.log('Erro ao buscar usuários:', error.message);
+      return [];
+    }
   }
 
   static async isAdmin(email) {
