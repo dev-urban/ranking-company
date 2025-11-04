@@ -16,7 +16,7 @@ const calculateRankingData = async () => {
     const now = new Date();
     const startDate = `${now.getFullYear()}-01-01`;
     const endDate = `${now.getFullYear()}-12-31`;
-    const globalGoal = 0; // Sem meta definida
+    const globalGoal = 60; // Meta de 60 vendas
 
     // Query para buscar estrutura de corretores, gerentes e diretores
     const structureQuery = `
@@ -36,11 +36,11 @@ const calculateRankingData = async () => {
         Corretores c
       LEFT JOIN Departamentos d ON
         d.id = c.departamento
-      LEFT JOIN railway.Corretores g ON
+      LEFT JOIN Corretores g ON
         d.gerente = g.id_bitrix
-      LEFT JOIN railway.Departamentos direcao ON
+      LEFT JOIN Departamentos direcao ON
         d.diretoria = direcao.id
-      LEFT JOIN Corretores dir 
+      LEFT JOIN Corretores dir
         ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
       WHERE
         c.status = 'Ativo'
@@ -143,10 +143,16 @@ const calculateRankingData = async () => {
           gerentePoints[gerenteKey] = {
             name: corretor.gerente,
             pontos: 0,
+            videos: 0,
+            visitas: 0,
+            vendas: 0,
             diretor: corretor.diretor
           };
         }
         gerentePoints[gerenteKey].pontos += corretorPoints[key].pontos;
+        gerentePoints[gerenteKey].videos += corretorPoints[key].videos;
+        gerentePoints[gerenteKey].visitas += corretorPoints[key].visitas;
+        gerentePoints[gerenteKey].vendas += corretorPoints[key].vendas;
       }
     });
 
@@ -158,7 +164,10 @@ const calculateRankingData = async () => {
         name: gerente.name,
         ages: gerente.pontos,
         diretor: gerente.diretor,
-        pontos: gerente.pontos
+        pontos: gerente.pontos,
+        videos: gerente.videos,
+        visitas: gerente.visitas,
+        vendas: gerente.vendas
       }));
 
     // Calcular pontos de diretores (soma dos corretores abaixo)
@@ -170,10 +179,16 @@ const calculateRankingData = async () => {
         if (!diretorPoints[diretorKey]) {
           diretorPoints[diretorKey] = {
             name: corretor.diretor,
-            pontos: 0
+            pontos: 0,
+            videos: 0,
+            visitas: 0,
+            vendas: 0
           };
         }
         diretorPoints[diretorKey].pontos += corretorPoints[key].pontos;
+        diretorPoints[diretorKey].videos += corretorPoints[key].videos;
+        diretorPoints[diretorKey].visitas += corretorPoints[key].visitas;
+        diretorPoints[diretorKey].vendas += corretorPoints[key].vendas;
       }
     });
 
@@ -184,22 +199,25 @@ const calculateRankingData = async () => {
         position: index + 1,
         name: diretor.name,
         ages: diretor.pontos,
-        pontos: diretor.pontos
+        pontos: diretor.pontos,
+        videos: diretor.videos,
+        visitas: diretor.visitas,
+        vendas: diretor.vendas
       }));
 
-    // Calcular total atingido (soma de todos os pontos)
-    const totalAtingido = Object.values(corretorPoints)
-      .reduce((sum, pontos) => sum + pontos.pontos, 0);
+    // Calcular total de vendas atingido
+    const totalVendas = Object.values(corretorPoints)
+      .reduce((sum, pontos) => sum + pontos.vendas, 0);
 
-    // Sem meta, progresso sempre 0
-    const progressPercentage = 0;
+    // Calcular progresso em relação à meta
+    const progressPercentage = globalGoal > 0 ? Math.min((totalVendas / globalGoal) * 100, 100) : 0;
 
     const rankingData = {
       topCorretores: corretorRanking,
       topGerentes,
       topDiretores,
-      totalAtingido,
-      metaGlobal: globalGoal,
+      totalVendas,
+      metaVendas: globalGoal,
       progressPercentage,
       lastUpdated: new Date().toISOString(),
       period: {
