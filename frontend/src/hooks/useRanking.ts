@@ -59,13 +59,13 @@ export const useRanking = () => {
   };
 
   useEffect(() => {
-    fetchRanking();
+    fetchRanking(false); // false = não usar cache, puxar direto do banco
 
-    // Auto refresh every 5 minutes
+    // Auto refresh every 1 minute - direto do banco
     const interval = setInterval(async () => {
       try {
         const timestamp = new Date().getTime();
-        const response = await fetch(`${API_URL}/dashboard/ranking/cached?t=${timestamp}`, {
+        const response = await fetch(`${API_URL}/dashboard/ranking?t=${timestamp}`, {
           method: 'GET',
           headers: {
             'Cache-Control': 'no-cache',
@@ -82,7 +82,7 @@ export const useRanking = () => {
       } catch (err) {
         console.error('Auto-refresh error:', err);
       }
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 1 * 60 * 1000); // 1 minute
 
     return () => clearInterval(interval);
   }, []);
