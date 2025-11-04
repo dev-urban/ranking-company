@@ -48,20 +48,20 @@ router.get('/', authMiddleware, async (req, res) => {
         ORDER BY corretor
       `;
     } else {
-      // Diretor vê apenas seus corretores
+      // Diretor vê apenas seus corretores - usando query simplificada que funciona
       structureQuery = `
         SELECT
-          CONCAT(IFNULL(c.nome, ''), ' ', IFNULL(c.sobrenome, '')) AS corretor,
-          CONCAT(IFNULL(g.nome, ''), ' ', IFNULL(g.sobrenome, '')) AS gerente,
-          CONCAT(IFNULL(dir.nome, IFNULL(g.nome, '')), ' ', IFNULL(dir.sobrenome, IFNULL(g.sobrenome, ''))) AS diretor,
-          IFNULL(c.email, '') AS email_corretor,
-          IFNULL(g.email, '') AS email_gerente,
-          IFNULL(dir.email, IFNULL(g.email, '')) AS email_diretor,
-          IFNULL(c.status, '') AS status_corretor,
-          UPPER(SUBSTRING_INDEX(IFNULL(c.email, ''), '@', 1)) AS corretor_map,
-          UPPER(SUBSTRING_INDEX(IFNULL(g.email, ''), '@', 1)) AS gerente_map,
-          UPPER(SUBSTRING_INDEX(IFNULL(dir.email, IFNULL(g.email, '')), '@', 1)) AS diretor_map,
-          IFNULL(c.cargo, '') AS cargo
+          CONCAT(c.nome, ' ', c.sobrenome) AS corretor,
+          CONCAT(g.nome, ' ', g.sobrenome) AS gerente,
+          CONCAT(dir.nome, ' ', dir.sobrenome) AS diretor,
+          c.email AS email_corretor,
+          g.email AS email_gerente,
+          dir.email AS email_diretor,
+          c.status AS status_corretor,
+          UPPER(SUBSTRING_INDEX(c.email, '@', 1)) AS corretor_map,
+          UPPER(SUBSTRING_INDEX(g.email, '@', 1)) AS gerente_map,
+          UPPER(SUBSTRING_INDEX(dir.email, '@', 1)) AS diretor_map,
+          c.cargo AS cargo
         FROM
           Corretores c
         LEFT JOIN Departamentos d ON
@@ -74,8 +74,8 @@ router.get('/', authMiddleware, async (req, res) => {
           direcao.gerente = dir.id_bitrix
         WHERE
           c.status = 'Ativo'
-          AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
-          AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
+          AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Diretor%')
+          AND (c.cargo IS NULL OR c.cargo NOT LIKE '%Gerente%')
           AND dir.email = ?
         ORDER BY corretor
       `;
@@ -83,19 +83,25 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 
     console.log('Executando query com filtro para email:', userEmail);
+    console.log('Query:', structureQuery);
+    console.log('Params:', queryParams);
     const [rows] = await db.execute(structureQuery, queryParams);
     console.log('Resultados encontrados:', rows.length);
+    
+    if (rows.length > 0) {
+      console.log('Primeiro resultado:', JSON.stringify(rows[0], null, 2));
+    }
 
     const corretores = rows
       .filter(row => row.email_corretor && row.email_corretor.trim() !== '')
       .map(row => ({
-        name: row.corretor.trim(),
-        email: row.email_corretor.trim(),
-        gerente: row.gerente.trim(),
-        gerenteEmail: row.email_gerente,
-        diretor: row.diretor.trim(),
-        diretorEmail: row.email_diretor,
-        cargo: row.cargo
+        name: (row.corretor || '').trim(),
+        email: (row.email_corretor || '').trim(),
+        gerente: (row.gerente || '').trim(),
+        gerenteEmail: row.email_gerente || '',
+        diretor: (row.diretor || '').trim(),
+        diretorEmail: row.email_diretor || '',
+        cargo: row.cargo || ''
       }));
 
     res.json({ corretores });
