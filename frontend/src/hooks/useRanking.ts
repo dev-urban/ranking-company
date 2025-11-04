@@ -57,6 +57,7 @@ export const useRanking = () => {
             'Pragma': 'no-cache'
           }
         });
+      }
 
       if (!response.ok) {
         throw new Error('Failed to refresh ranking data');
