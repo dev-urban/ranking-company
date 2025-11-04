@@ -29,11 +29,11 @@ router.get('/directors', async (req, res) => {
         Corretores c
       LEFT JOIN Departamentos d ON
         d.id = c.departamento
-      LEFT JOIN Corretores g ON
+      LEFT JOIN railway.Corretores g ON
         d.gerente = g.id_bitrix
-      LEFT JOIN Departamentos direcao ON
+      LEFT JOIN railway.Departamentos direcao ON
         d.diretoria = direcao.id
-      LEFT JOIN Corretores dir
+      LEFT JOIN railway.Corretores dir
         ON (CASE WHEN direcao.gerente IS NULL THEN d.gerente ELSE direcao.gerente END) = dir.id_bitrix
       WHERE
         c.status = 'Ativo'
