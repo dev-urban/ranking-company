@@ -4,6 +4,7 @@ import { useRanking } from '../hooks/useRanking';
 import { formatDate } from '../lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Progress } from '../components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 
 export const Ranking: React.FC = () => {
   const { data, loading, error, refreshRanking } = useRanking();
@@ -147,52 +148,65 @@ export const Ranking: React.FC = () => {
                   🏆 Top 15 Corretores
                 </CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col lg:grid lg:grid-cols-3 gap-3 p-4 pt-4 h-full">
-                {/* Primeira coluna - Posições 1-5 */}
-                <div className="space-y-2">
-                  {skeletonMode ? (
-                    Array.from({ length: 5 }).map((_, index) => (
-                      <div key={`skeleton-1-${index}`} className="h-24 bg-zinc-800 rounded-lg animate-pulse" />
-                    ))
-                  ) : (
-                    <>
-                      {data.topCorretores.slice(0, 5).map((corretor) => (
-                        <CorretorCard key={corretor.position} corretor={corretor} />
-                      ))}
-                      {/* Mobile: Mostrar todos */}
-                      <div className="lg:hidden space-y-2">
-                        {data.topCorretores.slice(5, 15).map((corretor) => (
-                          <CorretorCard key={corretor.position} corretor={corretor} />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
+              <CardContent className="p-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  {/* Primeira Coluna - Top 1-8 */}
+                  <div className="border-r border-orange-500/20">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-orange-500/20 hover:bg-transparent">
+                          <TableHead className="text-orange-500 font-bold">#</TableHead>
+                          <TableHead className="text-orange-500 font-bold">Corretor</TableHead>
+                          <TableHead className="text-orange-500 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-orange-500 font-bold text-right">Pts</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {skeletonMode ? (
+                          Array.from({ length: 8 }).map((_, index) => (
+                            <TableRow key={`skeleton-1-${index}`} className="border-orange-500/10">
+                              <TableCell colSpan={4}>
+                                <div className="h-16 bg-zinc-800 rounded animate-pulse" />
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          data.topCorretores.slice(0, 8).map((corretor) => (
+                            <CorretorTableRow key={corretor.position} corretor={corretor} />
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
 
-                {/* Segunda coluna - Posições 6-10 (desktop only) */}
-                <div className="hidden lg:block space-y-2">
-                  {skeletonMode ? (
-                    Array.from({ length: 5 }).map((_, index) => (
-                      <div key={`skeleton-2-${index}`} className="h-24 bg-zinc-800 rounded-lg animate-pulse" />
-                    ))
-                  ) : (
-                    data.topCorretores.slice(5, 10).map((corretor) => (
-                      <CorretorCard key={corretor.position} corretor={corretor} />
-                    ))
-                  )}
-                </div>
-
-                {/* Terceira coluna - Posições 11-15 (desktop only) */}
-                <div className="hidden lg:block space-y-2">
-                  {skeletonMode ? (
-                    Array.from({ length: 5 }).map((_, index) => (
-                      <div key={`skeleton-3-${index}`} className="h-24 bg-zinc-800 rounded-lg animate-pulse" />
-                    ))
-                  ) : (
-                    data.topCorretores.slice(10, 15).map((corretor) => (
-                      <CorretorCard key={corretor.position} corretor={corretor} />
-                    ))
-                  )}
+                  {/* Segunda Coluna - Top 9-15 */}
+                  <div>
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-orange-500/20 hover:bg-transparent">
+                          <TableHead className="text-orange-500 font-bold">#</TableHead>
+                          <TableHead className="text-orange-500 font-bold">Corretor</TableHead>
+                          <TableHead className="text-orange-500 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-orange-500 font-bold text-right">Pts</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {skeletonMode ? (
+                          Array.from({ length: 7 }).map((_, index) => (
+                            <TableRow key={`skeleton-2-${index}`} className="border-orange-500/10">
+                              <TableCell colSpan={4}>
+                                <div className="h-16 bg-zinc-800 rounded animate-pulse" />
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          data.topCorretores.slice(8, 15).map((corretor) => (
+                            <CorretorTableRow key={corretor.position} corretor={corretor} />
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -248,18 +262,14 @@ export const Ranking: React.FC = () => {
   );
 };
 
-// Componente para Card de Corretor
-const CorretorCard = ({ corretor }: any) => {
+// Componente para Linha de Corretor na Table
+const CorretorTableRow = ({ corretor }: any) => {
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1:
-        return "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-yellow-500/50";
-      case 2:
-        return "bg-gradient-to-r from-gray-400/20 to-gray-500/20 border-gray-400/50";
-      case 3:
-        return "bg-gradient-to-r from-orange-700/20 to-orange-800/20 border-orange-700/50";
-      default:
-        return "bg-zinc-800 border-zinc-700";
+      case 1: return "bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-l-4 border-l-yellow-500";
+      case 2: return "bg-gradient-to-r from-gray-400/10 to-gray-500/10 border-l-4 border-l-gray-400";
+      case 3: return "bg-gradient-to-r from-orange-700/10 to-orange-800/10 border-l-4 border-l-orange-700";
+      default: return "hover:bg-zinc-800/50";
     }
   };
 
@@ -273,47 +283,39 @@ const CorretorCard = ({ corretor }: any) => {
   };
 
   return (
-    <div className={`p-3 rounded-lg border transition-all duration-300 hover:border-orange-500 ${getPositionStyles(corretor.position)}`}>
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex items-start gap-2 flex-1">
-          <div className="w-8 h-8 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-sm font-bold text-orange-500">
-            {getPositionIcon(corretor.position)}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-bold text-white text-sm leading-tight">{corretor.name}</p>
-            <p className="text-xs text-gray-400">{corretor.gerente}</p>
-            <p className="text-xs text-gray-500">{corretor.diretor}</p>
-          </div>
+    <TableRow className={`border-orange-500/10 ${getPositionStyles(corretor.position)}`}>
+      <TableCell className="w-12">
+        <div className="w-8 h-8 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-sm font-bold text-orange-500">
+          {getPositionIcon(corretor.position)}
         </div>
-        <div className="text-right">
-          <div className="text-lg font-bold text-orange-500">{corretor.pontos}</div>
-          <div className="text-xs text-gray-400">pontos</div>
+      </TableCell>
+      <TableCell>
+        <div className="space-y-0.5">
+          <p className="font-bold text-white text-sm">{corretor.name}</p>
+          <p className="text-xs text-gray-400">{corretor.gerente}</p>
+          <p className="text-xs text-gray-500">{corretor.diretor}</p>
         </div>
-      </div>
-      <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-zinc-700/50">
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-1 mb-1">
+      </TableCell>
+      <TableCell className="text-center">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-center gap-1">
             <Video className="w-3 h-3 text-orange-400" />
             <span className="text-xs text-orange-400 font-bold">{corretor.videos || 0}</span>
           </div>
-          <div className="text-xs text-gray-500">vídeos</div>
-        </div>
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-1 mb-1">
+          <div className="flex items-center justify-center gap-1">
             <Building2 className="w-3 h-3 text-orange-400" />
             <span className="text-xs text-orange-400 font-bold">{corretor.visitas || 0}</span>
           </div>
-          <div className="text-xs text-gray-500">visitas</div>
-        </div>
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-1 mb-1">
+          <div className="flex items-center justify-center gap-1">
             <DollarSign className="w-3 h-3 text-orange-400" />
             <span className="text-xs text-orange-400 font-bold">{corretor.vendas || 0}</span>
           </div>
-          <div className="text-xs text-gray-500">vendas</div>
         </div>
-      </div>
-    </div>
+      </TableCell>
+      <TableCell className="text-right">
+        <div className="text-lg font-bold text-orange-500">{corretor.pontos}</div>
+      </TableCell>
+    </TableRow>
   );
 };
 
