@@ -33,10 +33,10 @@ export const Ranking: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-4">
           <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-orange-400 font-medium">Carregando dados...</p>
+          <p className="text-orange-500 font-medium">Carregando dados...</p>
         </div>
       </div>
     );
@@ -44,10 +44,10 @@ export const Ranking: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="text-red-500 text-xl mb-4">Erro ao carregar dados</div>
-          <p className="text-gray-400 mb-6">{error}</p>
+          <p className="text-gray-600 mb-6">{error}</p>
         </div>
       </div>
     );
@@ -56,25 +56,25 @@ export const Ranking: React.FC = () => {
   if (!data) return null;
 
   return (
-    <div className="min-h-screen p-1 md:p-2 bg-black">
+    <div className="min-h-screen p-1 md:p-2 bg-gray-50">
       <div className="w-full flex flex-col space-y-2">
         {/* Progress Bar - Meta de Vendas */}
-        <Card className={`bg-zinc-900 border-orange-500/20 shadow-xl transition-all duration-1000 ${statsGlow ? 'shadow-orange-500/50 shadow-2xl border-orange-500/50' : ''}`}>
+        <Card className={`bg-white border-orange-500/30 shadow-lg transition-all duration-1000 ${statsGlow ? 'shadow-orange-500/30 shadow-2xl border-orange-500/60' : ''}`}>
           <CardContent className="p-2">
-            <h3 className="text-xs font-bold text-orange-500 mb-1 flex items-center gap-1">
+            <h3 className="text-xs font-bold text-orange-600 mb-1 flex items-center gap-1">
               <Target className="w-3 h-3" />
               Meta de Vendas
             </h3>
             <div className="space-y-1">
               <Progress
                 value={data.progressPercentage}
-                className="h-2 bg-zinc-800 [&>div]:bg-orange-500"
+                className="h-2 bg-gray-200 [&>div]:bg-orange-500"
               />
-              <div className="flex justify-between text-xs text-gray-300">
-                <span className="text-orange-400 font-bold">{data.totalVendas} vendas</span>
+              <div className="flex justify-between text-xs text-gray-700">
+                <span className="text-orange-600 font-bold">{data.totalVendas} vendas</span>
                 <span>{data.metaVendas} vendas (meta)</span>
               </div>
-              <div className="text-center text-sm font-bold text-orange-500">
+              <div className="text-center text-sm font-bold text-orange-600">
                 {data.progressPercentage.toFixed(1)}% da meta atingida
               </div>
             </div>
@@ -85,9 +85,9 @@ export const Ranking: React.FC = () => {
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2">
           {/* Left: Top 15 Corretores - Aumentado em 10% (de col-span-8 para col-span-9) */}
           <div className="lg:col-span-9">
-            <Card className="bg-zinc-900 border-orange-500/30 shadow-xl h-full">
-              <CardHeader className="pb-2 border-b border-orange-500/20">
-                <CardTitle className="text-base text-orange-500 flex items-center gap-1">
+            <Card className="bg-white border-orange-500/30 shadow-lg h-full">
+              <CardHeader className="pb-2 border-b border-orange-300">
+                <CardTitle className="text-base text-orange-600 flex items-center gap-1">
                   <div className="w-1.5 h-4 bg-orange-500 rounded-full" />
                   🏆 Top 15 Corretores
                 </CardTitle>
@@ -95,22 +95,22 @@ export const Ranking: React.FC = () => {
               <CardContent className="p-0">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   {/* Primeira Coluna - Top 1-8 */}
-                  <div className="border-r border-orange-500/20">
+                  <div className="border-r border-gray-200">
                     <Table>
                       <TableHeader>
-                        <TableRow className="border-orange-500/20 hover:bg-transparent">
-                          <TableHead className="text-orange-500 font-bold">#</TableHead>
-                          <TableHead className="text-orange-500 font-bold">Corretor</TableHead>
-                          <TableHead className="text-orange-500 font-bold text-center">Métricas</TableHead>
-                          <TableHead className="text-orange-500 font-bold text-right">Pts</TableHead>
+                        <TableRow className="border-gray-200 hover:bg-transparent">
+                          <TableHead className="text-orange-600 font-bold">#</TableHead>
+                          <TableHead className="text-orange-600 font-bold">Corretor</TableHead>
+                          <TableHead className="text-orange-600 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {skeletonMode ? (
                           Array.from({ length: 8 }).map((_, index) => (
-                            <TableRow key={`skeleton-1-${index}`} className="border-orange-500/10">
+                            <TableRow key={`skeleton-1-${index}`} className="border-gray-100">
                               <TableCell colSpan={4}>
-                                <div className="h-16 bg-zinc-800 rounded animate-pulse" />
+                                <div className="h-16 bg-gray-200 rounded animate-pulse" />
                               </TableCell>
                             </TableRow>
                           ))
@@ -132,19 +132,19 @@ export const Ranking: React.FC = () => {
                   <div>
                     <Table>
                       <TableHeader>
-                        <TableRow className="border-orange-500/20 hover:bg-transparent">
-                          <TableHead className="text-orange-500 font-bold">#</TableHead>
-                          <TableHead className="text-orange-500 font-bold">Corretor</TableHead>
-                          <TableHead className="text-orange-500 font-bold text-center">Métricas</TableHead>
-                          <TableHead className="text-orange-500 font-bold text-right">Pts</TableHead>
+                        <TableRow className="border-gray-200 hover:bg-transparent">
+                          <TableHead className="text-orange-600 font-bold">#</TableHead>
+                          <TableHead className="text-orange-600 font-bold">Corretor</TableHead>
+                          <TableHead className="text-orange-600 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {skeletonMode ? (
                           Array.from({ length: 7 }).map((_, index) => (
-                            <TableRow key={`skeleton-2-${index}`} className="border-orange-500/10">
+                            <TableRow key={`skeleton-2-${index}`} className="border-gray-100">
                               <TableCell colSpan={4}>
-                                <div className="h-16 bg-zinc-800 rounded animate-pulse" />
+                                <div className="h-16 bg-gray-200 rounded animate-pulse" />
                               </TableCell>
                             </TableRow>
                           ))
@@ -169,9 +169,9 @@ export const Ranking: React.FC = () => {
           {/* Right: Top 5 Gerentes and Top 5 Diretores - Reduzido de col-span-4 para col-span-3 */}
           <div className="lg:col-span-3 flex flex-col gap-2">
             {/* Top 5 Gerentes */}
-            <Card className="bg-zinc-900 border-orange-500/30 shadow-xl">
-              <CardHeader className="pb-1 border-b border-orange-500/20">
-                <CardTitle className="text-xs text-orange-500 flex items-center gap-1">
+            <Card className="bg-white border-orange-500/30 shadow-lg">
+              <CardHeader className="pb-1 border-b border-orange-300">
+                <CardTitle className="text-xs text-orange-600 flex items-center gap-1">
                   <div className="w-1 h-3 bg-orange-500 rounded-full" />
                   🥇 Top 5 Gerentes
                 </CardTitle>
@@ -179,18 +179,18 @@ export const Ranking: React.FC = () => {
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-orange-500/20 hover:bg-transparent">
-                      <TableHead className="text-orange-500 font-bold w-10">#</TableHead>
-                      <TableHead className="text-orange-500 font-bold">Gerente</TableHead>
-                      <TableHead className="text-orange-500 font-bold text-right">Pts</TableHead>
+                    <TableRow className="border-gray-200 hover:bg-transparent">
+                      <TableHead className="text-orange-600 font-bold w-10">#</TableHead>
+                      <TableHead className="text-orange-600 font-bold">Gerente</TableHead>
+                      <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {skeletonMode ? (
                       Array.from({ length: 5 }).map((_, index) => (
-                        <TableRow key={`skeleton-gerente-${index}`} className="border-orange-500/10">
+                        <TableRow key={`skeleton-gerente-${index}`} className="border-gray-100">
                           <TableCell colSpan={3}>
-                            <div className="h-16 bg-zinc-800 rounded animate-pulse" />
+                            <div className="h-16 bg-gray-200 rounded animate-pulse" />
                           </TableCell>
                         </TableRow>
                       ))
@@ -210,9 +210,9 @@ export const Ranking: React.FC = () => {
             </Card>
 
             {/* Top 5 Diretores */}
-            <Card className="bg-zinc-900 border-orange-500/30 shadow-xl">
-              <CardHeader className="pb-1 border-b border-orange-500/20">
-                <CardTitle className="text-xs text-orange-500 flex items-center gap-1">
+            <Card className="bg-white border-orange-500/30 shadow-lg">
+              <CardHeader className="pb-1 border-b border-orange-300">
+                <CardTitle className="text-xs text-orange-600 flex items-center gap-1">
                   <div className="w-1 h-3 bg-orange-500 rounded-full" />
                   🏆 Top 5 Diretores
                 </CardTitle>
@@ -220,18 +220,18 @@ export const Ranking: React.FC = () => {
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-orange-500/20 hover:bg-transparent">
-                      <TableHead className="text-orange-500 font-bold w-10">#</TableHead>
-                      <TableHead className="text-orange-500 font-bold">Diretor</TableHead>
-                      <TableHead className="text-orange-500 font-bold text-right">Pts</TableHead>
+                    <TableRow className="border-gray-200 hover:bg-transparent">
+                      <TableHead className="text-orange-600 font-bold w-10">#</TableHead>
+                      <TableHead className="text-orange-600 font-bold">Diretor</TableHead>
+                      <TableHead className="text-orange-600 font-bold text-right">Pts</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {skeletonMode ? (
                       Array.from({ length: 5 }).map((_, index) => (
-                        <TableRow key={`skeleton-diretor-${index}`} className="border-orange-500/10">
+                        <TableRow key={`skeleton-diretor-${index}`} className="border-gray-100">
                           <TableCell colSpan={3}>
-                            <div className="h-16 bg-zinc-800 rounded animate-pulse" />
+                            <div className="h-16 bg-gray-200 rounded animate-pulse" />
                           </TableCell>
                         </TableRow>
                       ))
@@ -260,10 +260,10 @@ export const Ranking: React.FC = () => {
 const CorretorTableRow = ({ corretor }: any) => {
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-l-4 border-l-yellow-500";
-      case 2: return "bg-gradient-to-r from-gray-400/10 to-gray-500/10 border-l-4 border-l-gray-400";
-      case 3: return "bg-gradient-to-r from-orange-700/10 to-orange-800/10 border-l-4 border-l-orange-700";
-      default: return "hover:bg-zinc-800/50";
+      case 1: return "bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-l-yellow-500";
+      case 2: return "bg-gradient-to-r from-gray-100 to-gray-200 border-l-4 border-l-gray-400";
+      case 3: return "bg-gradient-to-r from-orange-100 to-orange-200 border-l-4 border-l-orange-600";
+      default: return "hover:bg-gray-50";
     }
   };
 
@@ -277,37 +277,37 @@ const CorretorTableRow = ({ corretor }: any) => {
   };
 
   return (
-    <TableRow className={`border-orange-500/10 ${getPositionStyles(corretor.position)}`}>
+    <TableRow className={`border-gray-100 ${getPositionStyles(corretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-6 h-6 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-xs font-bold text-orange-500">
+        <div className="w-6 h-6 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-xs font-bold text-orange-600">
           {getPositionIcon(corretor.position)}
         </div>
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-0">
-          <p className="font-bold text-white text-xs leading-tight">{corretor.name}</p>
-          <p className="text-[10px] text-gray-400 leading-tight">{corretor.gerente}</p>
+          <p className="font-bold text-gray-900 text-xs leading-tight">{corretor.name}</p>
+          <p className="text-[10px] text-gray-600 leading-tight">{corretor.gerente}</p>
           <p className="text-[10px] text-gray-500 leading-tight">{corretor.diretor}</p>
         </div>
       </TableCell>
       <TableCell className="text-center py-1">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center justify-center gap-0.5">
-            <Video className="w-2.5 h-2.5 text-orange-400" />
-            <span className="text-[10px] text-orange-400 font-bold">{corretor.videos || 0}</span>
+            <Video className="w-2.5 h-2.5 text-orange-600" />
+            <span className="text-[10px] text-orange-600 font-bold">{corretor.videos || 0}</span>
           </div>
           <div className="flex items-center justify-center gap-0.5">
-            <Building2 className="w-2.5 h-2.5 text-orange-400" />
-            <span className="text-[10px] text-orange-400 font-bold">{corretor.visitas || 0}</span>
+            <Building2 className="w-2.5 h-2.5 text-orange-600" />
+            <span className="text-[10px] text-orange-600 font-bold">{corretor.visitas || 0}</span>
           </div>
           <div className="flex items-center justify-center gap-0.5">
-            <DollarSign className="w-2.5 h-2.5 text-orange-400" />
-            <span className="text-[10px] text-orange-400 font-bold">{corretor.vendas || 0}</span>
+            <DollarSign className="w-2.5 h-2.5 text-orange-600" />
+            <span className="text-[10px] text-orange-600 font-bold">{corretor.vendas || 0}</span>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-sm font-bold text-orange-500">{corretor.pontos}</div>
+        <div className="text-sm font-bold text-orange-600">{corretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -317,10 +317,10 @@ const CorretorTableRow = ({ corretor }: any) => {
 const GerenteTableRow = ({ gerente }: any) => {
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-l-4 border-l-yellow-500";
-      case 2: return "bg-gradient-to-r from-gray-400/10 to-gray-500/10 border-l-4 border-l-gray-400";
-      case 3: return "bg-gradient-to-r from-orange-700/10 to-orange-800/10 border-l-4 border-l-orange-700";
-      default: return "hover:bg-zinc-800/50";
+      case 1: return "bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-l-yellow-500";
+      case 2: return "bg-gradient-to-r from-gray-100 to-gray-200 border-l-4 border-l-gray-400";
+      case 3: return "bg-gradient-to-r from-orange-100 to-orange-200 border-l-4 border-l-orange-600";
+      default: return "hover:bg-gray-50";
     }
   };
 
@@ -334,35 +334,35 @@ const GerenteTableRow = ({ gerente }: any) => {
   };
 
   return (
-    <TableRow className={`border-orange-500/10 ${getPositionStyles(gerente.position)}`}>
+    <TableRow className={`border-gray-100 ${getPositionStyles(gerente.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-5 h-5 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-[10px] font-bold text-orange-500">
+        <div className="w-5 h-5 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-[10px] font-bold text-orange-600">
           {getPositionIcon(gerente.position)}
         </div>
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-0">
-          <p className="font-bold text-white text-[11px] leading-tight">{gerente.name}</p>
-          <p className="text-[9px] text-gray-400 leading-tight">{gerente.diretor}</p>
+          <p className="font-bold text-gray-900 text-[11px] leading-tight">{gerente.name}</p>
+          <p className="text-[9px] text-gray-600 leading-tight">{gerente.diretor}</p>
           {/* Métricas inline */}
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="flex items-center gap-0.5">
-              <Video className="w-2 h-2 text-orange-400" />
-              <span className="text-[9px] text-orange-400 font-bold">{gerente.videos || 0}</span>
+              <Video className="w-2 h-2 text-orange-600" />
+              <span className="text-[9px] text-orange-600 font-bold">{gerente.videos || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-2 h-2 text-orange-400" />
-              <span className="text-[9px] text-orange-400 font-bold">{gerente.visitas || 0}</span>
+              <Building2 className="w-2 h-2 text-orange-600" />
+              <span className="text-[9px] text-orange-600 font-bold">{gerente.visitas || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-2 h-2 text-orange-400" />
-              <span className="text-[9px] text-orange-400 font-bold">{gerente.vendas || 0}</span>
+              <DollarSign className="w-2 h-2 text-orange-600" />
+              <span className="text-[9px] text-orange-600 font-bold">{gerente.vendas || 0}</span>
             </div>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-xs font-bold text-orange-500">{gerente.pontos}</div>
+        <div className="text-xs font-bold text-orange-600">{gerente.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -372,10 +372,10 @@ const GerenteTableRow = ({ gerente }: any) => {
 const DiretorTableRow = ({ diretor }: any) => {
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-l-4 border-l-yellow-500";
-      case 2: return "bg-gradient-to-r from-gray-400/10 to-gray-500/10 border-l-4 border-l-gray-400";
-      case 3: return "bg-gradient-to-r from-orange-700/10 to-orange-800/10 border-l-4 border-l-orange-700";
-      default: return "hover:bg-zinc-800/50";
+      case 1: return "bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-l-yellow-500";
+      case 2: return "bg-gradient-to-r from-gray-100 to-gray-200 border-l-4 border-l-gray-400";
+      case 3: return "bg-gradient-to-r from-orange-100 to-orange-200 border-l-4 border-l-orange-600";
+      default: return "hover:bg-gray-50";
     }
   };
 
@@ -389,34 +389,34 @@ const DiretorTableRow = ({ diretor }: any) => {
   };
 
   return (
-    <TableRow className={`border-orange-500/10 ${getPositionStyles(diretor.position)}`}>
+    <TableRow className={`border-gray-100 ${getPositionStyles(diretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-5 h-5 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-[10px] font-bold text-orange-500">
+        <div className="w-5 h-5 rounded-full bg-orange-100 border border-orange-300 flex items-center justify-center text-[10px] font-bold text-orange-600">
           {getPositionIcon(diretor.position)}
         </div>
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-0">
-          <p className="font-bold text-white text-[11px] leading-tight">{diretor.name}</p>
+          <p className="font-bold text-gray-900 text-[11px] leading-tight">{diretor.name}</p>
           {/* Métricas inline */}
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="flex items-center gap-0.5">
-              <Video className="w-2 h-2 text-orange-400" />
-              <span className="text-[9px] text-orange-400 font-bold">{diretor.videos || 0}</span>
+              <Video className="w-2 h-2 text-orange-600" />
+              <span className="text-[9px] text-orange-600 font-bold">{diretor.videos || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-2 h-2 text-orange-400" />
-              <span className="text-[9px] text-orange-400 font-bold">{diretor.visitas || 0}</span>
+              <Building2 className="w-2 h-2 text-orange-600" />
+              <span className="text-[9px] text-orange-600 font-bold">{diretor.visitas || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-2 h-2 text-orange-400" />
-              <span className="text-[9px] text-orange-400 font-bold">{diretor.vendas || 0}</span>
+              <DollarSign className="w-2 h-2 text-orange-600" />
+              <span className="text-[9px] text-orange-600 font-bold">{diretor.vendas || 0}</span>
             </div>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-xs font-bold text-orange-500">{diretor.pontos}</div>
+        <div className="text-xs font-bold text-orange-600">{diretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -425,26 +425,26 @@ const DiretorTableRow = ({ diretor }: any) => {
 // Componente Skeleton para Corretor
 const CorretorSkeletonRow = () => {
   return (
-    <TableRow className="border-orange-500/10">
+    <TableRow className="border-gray-100">
       <TableCell className="w-8 py-1">
-        <Skeleton className="w-6 h-6 rounded-full bg-zinc-800/50" />
+        <Skeleton className="w-6 h-6 rounded-full bg-gray-300" />
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-1">
-          <Skeleton className="h-3 w-24 bg-zinc-800/50" />
-          <Skeleton className="h-2 w-20 bg-zinc-800/50" />
-          <Skeleton className="h-2 w-20 bg-zinc-800/50" />
+          <Skeleton className="h-3 w-24 bg-gray-300" />
+          <Skeleton className="h-2 w-20 bg-gray-300" />
+          <Skeleton className="h-2 w-20 bg-gray-300" />
         </div>
       </TableCell>
       <TableCell className="text-center py-1">
         <div className="flex flex-col gap-0.5 items-center">
-          <Skeleton className="h-2.5 w-8 bg-zinc-800/50" />
-          <Skeleton className="h-2.5 w-8 bg-zinc-800/50" />
-          <Skeleton className="h-2.5 w-8 bg-zinc-800/50" />
+          <Skeleton className="h-2.5 w-8 bg-gray-300" />
+          <Skeleton className="h-2.5 w-8 bg-gray-300" />
+          <Skeleton className="h-2.5 w-8 bg-gray-300" />
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <Skeleton className="h-4 w-8 ml-auto bg-zinc-800/50" />
+        <Skeleton className="h-4 w-8 ml-auto bg-gray-300" />
       </TableCell>
     </TableRow>
   );
@@ -453,19 +453,19 @@ const CorretorSkeletonRow = () => {
 // Componente Skeleton para Gerente
 const GerenteSkeletonRow = () => {
   return (
-    <TableRow className="border-orange-500/10">
+    <TableRow className="border-gray-100">
       <TableCell className="w-8 py-1">
-        <Skeleton className="w-5 h-5 rounded-full bg-zinc-800/50" />
+        <Skeleton className="w-5 h-5 rounded-full bg-gray-300" />
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-1">
-          <Skeleton className="h-3 w-24 bg-zinc-800/50" />
-          <Skeleton className="h-2 w-20 bg-zinc-800/50" />
-          <Skeleton className="h-2 w-16 bg-zinc-800/50" />
+          <Skeleton className="h-3 w-24 bg-gray-300" />
+          <Skeleton className="h-2 w-20 bg-gray-300" />
+          <Skeleton className="h-2 w-16 bg-gray-300" />
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <Skeleton className="h-3 w-8 ml-auto bg-zinc-800/50" />
+        <Skeleton className="h-3 w-8 ml-auto bg-gray-300" />
       </TableCell>
     </TableRow>
   );
@@ -474,18 +474,18 @@ const GerenteSkeletonRow = () => {
 // Componente Skeleton para Diretor
 const DiretorSkeletonRow = () => {
   return (
-    <TableRow className="border-orange-500/10">
+    <TableRow className="border-gray-100">
       <TableCell className="w-8 py-1">
-        <Skeleton className="w-5 h-5 rounded-full bg-zinc-800/50" />
+        <Skeleton className="w-5 h-5 rounded-full bg-gray-300" />
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-1">
-          <Skeleton className="h-3 w-24 bg-zinc-800/50" />
-          <Skeleton className="h-2 w-16 bg-zinc-800/50" />
+          <Skeleton className="h-3 w-24 bg-gray-300" />
+          <Skeleton className="h-2 w-16 bg-gray-300" />
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <Skeleton className="h-3 w-8 ml-auto bg-zinc-800/50" />
+        <Skeleton className="h-3 w-8 ml-auto bg-gray-300" />
       </TableCell>
     </TableRow>
   );
