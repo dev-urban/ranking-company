@@ -248,8 +248,8 @@ function Dashboard() {
         </Card>
 
         {/* Table */}
-        <Card className="bg-zinc-900 border-orange-500/20">
-          <CardHeader>
+        <Card className="bg-zinc-900 border-orange-500/20 flex flex-col" style={{ height: 'calc(100vh - 280px)' }}>
+          <CardHeader className="flex-shrink-0">
             <CardTitle className="text-xl text-white flex items-center justify-between">
               <span>Corretores ({filteredCorretores.length})</span>
               <span className="text-sm text-gray-400 font-normal">
@@ -257,108 +257,112 @@ function Dashboard() {
               </span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 overflow-hidden p-0">
             {filteredCorretores.length > 0 ? (
-              <div className="rounded-md border border-orange-500/20 overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-orange-500/20 bg-zinc-950 hover:bg-zinc-950">
-                      <TableHead className="text-orange-500 font-bold">Corretor</TableHead>
-                      <TableHead className="text-orange-500 font-bold">Gerente</TableHead>
-                      <TableHead className="text-orange-500 font-bold">Diretor</TableHead>
-                      <TableHead className="text-orange-500 font-bold text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <Video className="h-4 w-4" />
-                          Vídeos
-                        </div>
-                      </TableHead>
-                      <TableHead className="text-orange-500 font-bold text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <Building2 className="h-4 w-4" />
-                          Visitas
-                        </div>
-                      </TableHead>
-                      <TableHead className="text-orange-500 font-bold text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <DollarSign className="h-4 w-4" />
-                          Vendas
-                        </div>
-                      </TableHead>
-                      <TableHead className="text-orange-500 font-bold text-right">Pontos</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredCorretores.map((corretor) => (
-                      <TableRow
-                        key={corretor.email}
-                        className="border-orange-500/10 hover:bg-orange-500/5"
-                      >
-                        <TableCell className="font-medium">
-                          <div className="space-y-0.5">
-                            <p className="text-white text-sm">{corretor.name}</p>
-                            <p className="text-xs text-gray-500">{corretor.email}</p>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-gray-400 text-sm">
-                          {corretor.gerente || '-'}
-                        </TableCell>
-                        <TableCell className="text-gray-400 text-sm">
-                          {corretor.diretor || '-'}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <div className="flex flex-col items-center gap-1">
-                            <Input
-                              type="number"
-                              value={corretor.metrics.videos}
-                              onChange={(e) => handleMetricChange(corretor.email, 'videos', e.target.value)}
-                              min="0"
-                              disabled={saving}
-                              className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
-                            />
-                            <span className="text-xs text-orange-400">
-                              {(corretor.metrics.videos || 0) * 10}pts
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <div className="flex flex-col items-center gap-1">
-                            <Input
-                              type="number"
-                              value={corretor.metrics.visitas}
-                              onChange={(e) => handleMetricChange(corretor.email, 'visitas', e.target.value)}
-                              min="0"
-                              disabled={saving}
-                              className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
-                            />
-                            <span className="text-xs text-blue-400">
-                              {(corretor.metrics.visitas || 0) * 20}pts
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <div className="flex flex-col items-center gap-1">
-                            <Input
-                              type="number"
-                              value={corretor.metrics.vendas}
-                              onChange={(e) => handleMetricChange(corretor.email, 'vendas', e.target.value)}
-                              min="0"
-                              disabled={saving}
-                              className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
-                            />
-                            <span className="text-xs text-purple-400">
-                              {(corretor.metrics.vendas || 0) * 100}pts
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="text-lg font-bold text-orange-500">
-                            {corretor.pontos || 0}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <div className="h-full overflow-auto">
+                <div className="min-w-full inline-block align-middle">
+                  <div className="overflow-hidden border border-orange-500/20">
+                    <Table>
+                      <TableHeader className="sticky top-0 z-10 bg-zinc-950">
+                        <TableRow className="border-orange-500/20 hover:bg-zinc-950">
+                          <TableHead className="text-orange-500 font-bold bg-zinc-950">Corretor</TableHead>
+                          <TableHead className="text-orange-500 font-bold bg-zinc-950">Gerente</TableHead>
+                          <TableHead className="text-orange-500 font-bold bg-zinc-950">Diretor</TableHead>
+                          <TableHead className="text-orange-500 font-bold text-center bg-zinc-950">
+                            <div className="flex items-center justify-center gap-1">
+                              <Video className="h-4 w-4" />
+                              Vídeos
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-orange-500 font-bold text-center bg-zinc-950">
+                            <div className="flex items-center justify-center gap-1">
+                              <Building2 className="h-4 w-4" />
+                              Visitas
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-orange-500 font-bold text-center bg-zinc-950">
+                            <div className="flex items-center justify-center gap-1">
+                              <DollarSign className="h-4 w-4" />
+                              Vendas
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-orange-500 font-bold text-right bg-zinc-950">Pontos</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredCorretores.map((corretor) => (
+                          <TableRow
+                            key={corretor.email}
+                            className="border-orange-500/10 hover:bg-orange-500/5"
+                          >
+                            <TableCell className="font-medium">
+                              <div className="space-y-0.5">
+                                <p className="text-white text-sm">{corretor.name}</p>
+                                <p className="text-xs text-gray-400">{corretor.email}</p>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-white text-sm">
+                              {corretor.gerente || '-'}
+                            </TableCell>
+                            <TableCell className="text-white text-sm">
+                              {corretor.diretor || '-'}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <div className="flex flex-col items-center gap-1">
+                                <Input
+                                  type="number"
+                                  value={corretor.metrics.videos}
+                                  onChange={(e) => handleMetricChange(corretor.email, 'videos', e.target.value)}
+                                  min="0"
+                                  disabled={saving}
+                                  className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
+                                />
+                                <span className="text-xs text-orange-400">
+                                  {(corretor.metrics.videos || 0) * 10}pts
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <div className="flex flex-col items-center gap-1">
+                                <Input
+                                  type="number"
+                                  value={corretor.metrics.visitas}
+                                  onChange={(e) => handleMetricChange(corretor.email, 'visitas', e.target.value)}
+                                  min="0"
+                                  disabled={saving}
+                                  className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
+                                />
+                                <span className="text-xs text-blue-400">
+                                  {(corretor.metrics.visitas || 0) * 20}pts
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <div className="flex flex-col items-center gap-1">
+                                <Input
+                                  type="number"
+                                  value={corretor.metrics.vendas}
+                                  onChange={(e) => handleMetricChange(corretor.email, 'vendas', e.target.value)}
+                                  min="0"
+                                  disabled={saving}
+                                  className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
+                                />
+                                <span className="text-xs text-purple-400">
+                                  {(corretor.metrics.vendas || 0) * 100}pts
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="text-lg font-bold text-orange-500">
+                                {corretor.pontos || 0}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="text-center p-8 text-gray-400">
