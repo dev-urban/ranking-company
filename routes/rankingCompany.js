@@ -18,6 +18,15 @@ const calculateRankingData = async () => {
     const endDate = `${now.getFullYear()}-12-31`;
     const globalGoal = 60; // Meta de 60 vendas
 
+    // Lista de diretores permitidos
+    const ALLOWED_DIRECTORS = [
+      'luis.rosa@urban.imb.br',
+      'jessica.vigolo@urban.imb.br',
+      'romario.lorenco@urban.imb.br',
+      'joao.menezes@urban.imb.br',
+      'marcos.gasparini@urban.imb.br'
+    ];
+
     // Query para buscar estrutura de corretores, gerentes e diretores
     const structureQuery = `
       SELECT
@@ -46,9 +55,10 @@ const calculateRankingData = async () => {
         c.status = 'true'
         AND IFNULL(c.cargo, '') NOT LIKE '%Diretor%'
         AND IFNULL(c.cargo, '') NOT LIKE '%Gerente%'
+        AND LOWER(TRIM(IFNULL(dir.email, IFNULL(g.email, '')))) IN (${ALLOWED_DIRECTORS.map(() => '?').join(',')})
     `;
 
-    const [structureRows] = await db.execute(structureQuery);
+    const [structureRows] = await db.execute(structureQuery, ALLOWED_DIRECTORS);
 
     // TODO: Buscar dados de vídeos, visitas e vendas de cada corretor
     // Por enquanto, vamos usar uma estrutura que permite buscar esses dados
