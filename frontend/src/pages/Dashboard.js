@@ -4,7 +4,7 @@ import { authService } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Video, Building2, DollarSign, Save, Trophy, LogOut, User } from 'lucide-react';
+import { Video, Building2, DollarSign, Save, LogOut, User } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
