@@ -220,7 +220,7 @@ const calculateRankingData = async () => {
 };
 
 // Get ranking data
-router.get('/', async (req, res) => {
+router.get('/ranking', async (req, res) => {
   try {
     const rankingData = await calculateRankingData();
     res.json(rankingData);
@@ -231,7 +231,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get cached ranking data from JSON
-router.get('/cached', async (req, res) => {
+router.get('/ranking/cached', async (req, res) => {
   try {
     const dataPath = path.join(__dirname, '../data/ranking.json');
     const data = await fs.readFile(dataPath, 'utf8');
@@ -245,7 +245,7 @@ router.get('/cached', async (req, res) => {
 });
 
 // Force refresh ranking data
-router.post('/refresh', async (req, res) => {
+router.post('/ranking/refresh', async (req, res) => {
   try {
     const rankingData = await calculateRankingData();
     res.json({ message: 'Ranking data refreshed successfully', data: rankingData });
