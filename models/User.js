@@ -15,24 +15,27 @@ class User {
     }
 
     try {
-      // Tenta buscar da tabela Corretores (incluindo senha se existir)
+      // Tenta buscar da tabela Corretores (tabela não tem coluna password)
       const [rows] = await db.execute(
         `SELECT 
           id_bitrix as id, 
           CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username, 
           email,
-          3 as role_id,
-          IFNULL(password, '') as password
+          3 as role_id
         FROM Corretores WHERE email = ?`,
         [email]
       );
       
       if (rows && rows.length > 0) {
         const user = rows[0];
-        // Se não tem senha no banco e é admin, usa senha padrão hasheada
-        if (!user.password && email === 'mkt@urban.imb.br') {
+        // Define senha padrão hasheada para admin (tabela não tem senha)
+        if (email === 'mkt@urban.imb.br') {
           // Hash fixo para @Gabriela12345
           user.password = '$2b$12$U/Iore0C2qarh0ENU1u/HO3PvJXJKWMT0EKCf/o2oIHSIECvnx4bW';
+          user.role_id = 1; // Admin
+        } else {
+          // Diretores não têm senha no banco - serão autenticados via outro método ou não terão login
+          user.password = '';
         }
         return user;
       }
