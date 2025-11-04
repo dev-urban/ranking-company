@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 21 90% 48%;
+  --primary-foreground: 222.2 84% 4.9%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 21 90% 48%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Reset dos CSS conflitantes do App.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+/* Animações para o ranking - Estilo Kanban */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animação do pódio - cresce de baixo para cima com estilo Kanban */
+@keyframes podiumRise {
+  from {
+    opacity: 0;
+    transform: scaleY(0) translateY(16px);
+    transform-origin: bottom;
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* Hover effects estilo Kanban */
+.hover\:scale-105:hover {
+  transform: scale(1.05) translateY(-2px);
+}
+
+.hover\:-translate-y-1:hover {
+  transform: translateY(-4px);
+}
+
+.hover\:-translate-y-2:hover {
+  transform: translateY(-8px);
+}
+
+/* Animações de entrada sequencial */
+.animate-in {
+  animation: fadeInUp 300ms ease-out forwards;
+}
+
+.column-delay-0 {
+  animation-delay: 400ms;
+  opacity: 0;
+}
+
+.column-delay-1 {
+  animation-delay: 500ms;
+  opacity: 0;
+}
+
+.column-delay-2 {
+  animation-delay: 600ms;
+  opacity: 0;
+}
+
+.column-delay-3 {
+  animation-delay: 700ms;
+  opacity: 0;
+}
+
+/* Transições suaves estilo Kanban */
+.transition-kanban {
+  transition: all 200ms ease-out;
+}
+
+.transition-kanban-slow {
+  transition: all 400ms ease-out;
+}

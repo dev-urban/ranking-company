@@ -1,0 +1,146 @@
+{
+  "topCorretores": [
+    {
+      "position": 1,
+      "name": "Dirlene Felice",
+      "ages": 21,
+      "gerente": "Ronaldo Dos Santos Kundzin Junior ",
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 2,
+      "name": "Paulo Preto",
+      "ages": 19,
+      "gerente": "Ronaldo Dos Santos Kundzin Junior ",
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 3,
+      "name": "Gabriella Alvim",
+      "ages": 17.5,
+      "gerente": "Viviane Santos Cortinaz ",
+      "diretor": "Monica Andreotti Dos Santos ",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 4,
+      "name": "Fatima Vargas",
+      "ages": 17.5,
+      "gerente": "Lecxandro Mendes Medeiros Gimenes ",
+      "diretor": "Alexandre Fonseca Jr",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 5,
+      "name": "Katia Zappe",
+      "ages": 17,
+      "gerente": "Tiago Junqueira Losch ",
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 6,
+      "name": "Amanda Pinheiro",
+      "ages": 17,
+      "gerente": "Lecxandro Mendes Medeiros Gimenes ",
+      "diretor": "Alexandre Fonseca Jr",
+      "cargo": "Corretora"
+    },
+    {
+      "position": 7,
+      "name": "Carolina Coelho",
+      "ages": 16.5,
+      "gerente": "Rodrigo Garcia De Oliveira ",
+      "diretor": "Alexandre Fonseca Jr",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 8,
+      "name": "Barbara Guimaraes",
+      "ages": 16,
+      "gerente": "Ronaldo Dos Santos Kundzin Junior ",
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 9,
+      "name": "Claiton Cremonini",
+      "ages": 15,
+      "gerente": "Viviane Santos Cortinaz ",
+      "diretor": "Monica Andreotti Dos Santos ",
+      "cargo": "Corretor"
+    },
+    {
+      "position": 10,
+      "name": "Amanda Martinelli",
+      "ages": 15,
+      "gerente": "Ronaldo Dos Santos Kundzin Junior ",
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Corretor"
+    }
+  ],
+  "topGerentes": [
+    {
+      "position": 1,
+      "name": "Ronaldo Dos Santos Kundzin Junior ",
+      "ages": 108.5,
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Gerente"
+    },
+    {
+      "position": 2,
+      "name": "Lecxandro Mendes Medeiros Gimenes ",
+      "ages": 93.5,
+      "diretor": "Alexandre Fonseca Jr",
+      "cargo": "Gerente"
+    },
+    {
+      "position": 3,
+      "name": "Rodrigo Garcia De Oliveira ",
+      "ages": 93.5,
+      "diretor": "Alexandre Fonseca Jr",
+      "cargo": "Gerente"
+    },
+    {
+      "position": 4,
+      "name": "Tiago Junqueira Losch ",
+      "ages": 89,
+      "diretor": "Thiago Simoes Santos ",
+      "cargo": "Gerente"
+    },
+    {
+      "position": 5,
+      "name": "Viviane Santos Cortinaz ",
+      "ages": 86.5,
+      "diretor": "Monica Andreotti Dos Santos ",
+      "cargo": "Gerente"
+    }
+  ],
+  "topDiretores": [
+    {
+      "position": 1,
+      "name": "Thiago Simoes Santos ",
+      "ages": 252.5
+    },
+    {
+      "position": 2,
+      "name": "Alexandre Fonseca Jr",
+      "ages": 187
+    },
+    {
+      "position": 3,
+      "name": "Monica Andreotti Dos Santos ",
+      "ages": 163.5
+    }
+  ],
+  "totalAtingido": 603,
+  "metaGlobal": 700,
+  "progressPercentage": 86.14,
+  "lastUpdated": "2025-10-29T12:34:11.344Z",
+  "period": {
+    "startDate": "2025-09-18",
+    "endDate": "2025-11-30"
+  }
+}
