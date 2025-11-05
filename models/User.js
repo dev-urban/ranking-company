@@ -7,6 +7,7 @@ class User {
       'luis.rosa@urban.imb.br',
       'romario.lorenco@urban.imb.br',
       'joao.menezes@urban.imb.br',
+      'marcos.gasparini@urban.imb.br',
       'mkt@urban.imb.br'
     ];
 
@@ -50,7 +51,8 @@ class User {
       'luis.rosa@urban.imb.br': { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br', role_id: 3, password: defaultPasswordHash },
       'romario.lorenco@urban.imb.br': { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br', role_id: 3, password: defaultPasswordHash },
       'joao.menezes@urban.imb.br': { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br', role_id: 3, password: defaultPasswordHash },
-      'mkt@urban.imb.br': { id: 5, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: defaultPasswordHash }
+      'marcos.gasparini@urban.imb.br': { id: 5, username: 'Marcos Gasparini', email: 'marcos.gasparini@urban.imb.br', role_id: 3, password: defaultPasswordHash },
+      'mkt@urban.imb.br': { id: 6, username: 'Marketing', email: 'mkt@urban.imb.br', role_id: 1, password: defaultPasswordHash }
     };
 
     return mockUsers[email] || null;
@@ -79,16 +81,17 @@ class User {
       'jessica.vigolo@urban.imb.br',
       'luis.rosa@urban.imb.br',
       'romario.lorenco@urban.imb.br',
-      'joao.menezes@urban.imb.br'
+      'joao.menezes@urban.imb.br',
+      'marcos.gasparini@urban.imb.br'
     ];
 
     try {
       // Tenta buscar da tabela Corretores
       const placeholders = directorEmails.map(() => '?').join(',');
       const [rows] = await db.execute(
-        `SELECT 
-          id_bitrix as id, 
-          CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username, 
+        `SELECT
+          id_bitrix as id,
+          CONCAT(IFNULL(nome, ''), ' ', IFNULL(sobrenome, '')) as username,
           email
         FROM Corretores WHERE email IN (${placeholders})`,
         directorEmails
@@ -106,7 +109,8 @@ class User {
       { id: 1, username: 'Jessica Vigolo', email: 'jessica.vigolo@urban.imb.br' },
       { id: 2, username: 'Luis Rosa', email: 'luis.rosa@urban.imb.br' },
       { id: 3, username: 'Romário Lorenço', email: 'romario.lorenco@urban.imb.br' },
-      { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br' }
+      { id: 4, username: 'João Menezes', email: 'joao.menezes@urban.imb.br' },
+      { id: 5, username: 'Marcos Gasparini', email: 'marcos.gasparini@urban.imb.br' }
     ];
   }
 
@@ -117,6 +121,7 @@ class User {
       'luis.rosa@urban.imb.br',
       'romario.lorenco@urban.imb.br',
       'joao.menezes@urban.imb.br',
+      'marcos.gasparini@urban.imb.br',
       'mkt@urban.imb.br'
     ];
 
