@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Video, Building2, DollarSign, Target } from 'lucide-react';
+import { Video, Building2, DollarSign, Target, TrendingUp } from 'lucide-react';
 import { useRanking } from '../hooks/useRanking';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Progress } from '../components/ui/progress';
@@ -83,31 +83,40 @@ export const Ranking: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <Card className={`bg-white border-gray-200 shadow-lg ${statsGlow ? 'shadow-gold-500/30 shadow-2xl' : ''}`}>
-            <CardHeader className="pb-1">
-              <CardTitle className="text-xs text-gray-900">Total Atingido</CardTitle>
+          <Card className={`relative bg-white border-gray-200 shadow-md ${statsGlow ? 'shadow-gold-500/30 shadow-xl' : ''}`}>
+            <CardHeader className="py-1 px-2">
+              <CardTitle className="text-[11px] text-gray-900">Total Atingido</CardTitle>
             </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-2xl font-bold text-[#001f3f]">{data.totalVendas}</div>
-              <div className="text-[11px] text-gray-600">vendas</div>
+            <CardContent className="py-1 px-2">
+              <div className="text-xl font-bold text-[#001f3f]">{data.totalVendas}</div>
+              <div className="text-[10px] text-gray-600 leading-none">vendas</div>
+              <div className="absolute top-2 right-2 w-6 h-6 rounded-md bg-[#dde6fc] flex items-center justify-center">
+                <DollarSign className="w-4 h-4 text-[#3e61b4]" />
+              </div>
             </CardContent>
           </Card>
-          <Card className={`bg-white border-gray-200 shadow-lg ${statsGlow ? 'shadow-gold-500/30 shadow-2xl' : ''}`}>
-            <CardHeader className="pb-1">
-              <CardTitle className="text-xs text-gray-900">Meta Global</CardTitle>
+          <Card className={`relative bg-white border-gray-200 shadow-md ${statsGlow ? 'shadow-gold-500/30 shadow-xl' : ''}`}>
+            <CardHeader className="py-1 px-2">
+              <CardTitle className="text-[11px] text-gray-900">Meta Global</CardTitle>
             </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-2xl font-bold text-[#001f3f]">{data.metaVendas}</div>
-              <div className="text-[11px] text-gray-600">vendas</div>
+            <CardContent className="py-1 px-2">
+              <div className="text-xl font-bold text-[#001f3f]">{data.metaVendas}</div>
+              <div className="text-[10px] text-gray-600 leading-none">vendas</div>
+              <div className="absolute top-2 right-2 w-6 h-6 rounded-md bg-[#dde6fc] flex items-center justify-center">
+                <Target className="w-4 h-4 text-[#3e61b4]" />
+              </div>
             </CardContent>
           </Card>
-          <Card className={`bg-white border-gray-200 shadow-lg ${statsGlow ? 'shadow-gold-500/30 shadow-2xl' : ''}`}>
-            <CardHeader className="pb-1">
-              <CardTitle className="text-xs text-gray-900">Progresso</CardTitle>
+          <Card className={`relative bg-white border-gray-200 shadow-md ${statsGlow ? 'shadow-gold-500/30 shadow-xl' : ''}`}>
+            <CardHeader className="py-1 px-2">
+              <CardTitle className="text-[11px] text-gray-900">Progresso</CardTitle>
             </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-2xl font-bold text-[#001f3f]">{data.progressPercentage.toFixed(1)}%</div>
-              <div className="text-[11px] text-gray-600">da meta</div>
+            <CardContent className="py-1 px-2">
+              <div className="text-xl font-bold text-[#001f3f]">{data.progressPercentage.toFixed(1)}%</div>
+              <div className="text-[10px] text-gray-600 leading-none">da meta</div>
+              <div className="absolute top-2 right-2 w-6 h-6 rounded-md bg-[#dde6fc] flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 text-[#3e61b4]" />
+              </div>
             </CardContent>
           </Card>
         </div>
