@@ -255,12 +255,14 @@ export const Ranking: React.FC = () => {
 
 // Componente para Linha de Corretor na Table
 const CorretorTableRow = ({ corretor }: any) => {
+  const isTopThree = corretor.position <= 3;
+  
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-gold-100 to-gold-200 border-l-4 border-l-gold-500";
-      case 2: return "bg-gradient-to-r from-slate-100 to-slate-200 border-l-4 border-l-slate-400";
-      case 3: return "bg-gradient-to-r from-amber-100 to-amber-200 border-l-4 border-l-amber-600";
-      default: return "hover:bg-white";
+      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600 border-l-4 border-l-yellow-700"; // gold sólido
+      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500 border-l-4 border-l-gray-600"; // silver sólido
+      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700 border-l-4 border-l-amber-800"; // bronze sólido
+      default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
 
@@ -273,38 +275,41 @@ const CorretorTableRow = ({ corretor }: any) => {
     }
   };
 
+  const getMetricColor = () => isTopThree ? "text-white" : "text-navy-900";
+  const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
+
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(corretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-6 h-6 rounded-full bg-gold-100 border border-gold-300 flex items-center justify-center text-xs font-bold text-gold-600">
+        <div className={`w-6 h-6 rounded-full ${isTopThree ? 'bg-white/20 border-white/30' : 'bg-gray-100 border-gray-300'} border flex items-center justify-center text-xs font-bold ${isTopThree ? 'text-white' : 'text-navy-900'}`}>
           {getPositionIcon(corretor.position)}
         </div>
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-0">
-          <p className="font-bold text-gray-900 text-xs leading-tight">{corretor.name}</p>
-          <p className="text-[10px] text-gray-600 leading-tight">{corretor.gerente}</p>
-          <p className="text-[10px] text-gray-500 leading-tight">{corretor.diretor}</p>
+          <p className={`font-bold ${getTextColor()} text-xs leading-tight`}>{corretor.name}</p>
+          <p className={`text-[10px] ${isTopThree ? 'text-gray-800' : 'text-gray-600'} leading-tight`}>{corretor.gerente}</p>
+          <p className={`text-[10px] ${isTopThree ? 'text-gray-700' : 'text-gray-500'} leading-tight`}>{corretor.diretor}</p>
         </div>
       </TableCell>
       <TableCell className="text-center py-1">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center justify-center gap-0.5">
-            <Video className="w-2.5 h-2.5 text-gold-600" />
-            <span className="text-[10px] text-gold-600 font-bold">{corretor.videos || 0}</span>
+            <Video className={`w-2.5 h-2.5 ${getMetricColor()}`} />
+            <span className={`text-[10px] ${getMetricColor()} font-bold`}>{corretor.videos || 0}</span>
           </div>
           <div className="flex items-center justify-center gap-0.5">
-            <Building2 className="w-2.5 h-2.5 text-gold-600" />
-            <span className="text-[10px] text-gold-600 font-bold">{corretor.visitas || 0}</span>
+            <Building2 className={`w-2.5 h-2.5 ${getMetricColor()}`} />
+            <span className={`text-[10px] ${getMetricColor()} font-bold`}>{corretor.visitas || 0}</span>
           </div>
           <div className="flex items-center justify-center gap-0.5">
-            <DollarSign className="w-2.5 h-2.5 text-gold-600" />
-            <span className="text-[10px] text-gold-600 font-bold">{corretor.vendas || 0}</span>
+            <DollarSign className={`w-2.5 h-2.5 ${getMetricColor()}`} />
+            <span className={`text-[10px] ${getMetricColor()} font-bold`}>{corretor.vendas || 0}</span>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-sm font-bold text-gold-600">{corretor.pontos}</div>
+        <div className={`text-sm font-bold ${getMetricColor()}`}>{corretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -312,12 +317,14 @@ const CorretorTableRow = ({ corretor }: any) => {
 
 // Componente para Linha de Gerente na Table
 const GerenteTableRow = ({ gerente }: any) => {
+  const isTopThree = gerente.position <= 3;
+  
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-gold-100 to-gold-200 border-l-4 border-l-gold-500";
-      case 2: return "bg-gradient-to-r from-slate-100 to-slate-200 border-l-4 border-l-slate-400";
-      case 3: return "bg-gradient-to-r from-amber-100 to-amber-200 border-l-4 border-l-amber-600";
-      default: return "hover:bg-white";
+      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600 border-l-4 border-l-yellow-700"; // gold sólido
+      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500 border-l-4 border-l-gray-600"; // silver sólido
+      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700 border-l-4 border-l-amber-800"; // bronze sólido
+      default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
 
@@ -330,36 +337,39 @@ const GerenteTableRow = ({ gerente }: any) => {
     }
   };
 
+  const getMetricColor = () => isTopThree ? "text-white" : "text-navy-900";
+  const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
+
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(gerente.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-5 h-5 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-[10px] font-bold text-gold-600">
+        <div className={`w-5 h-5 rounded-full ${isTopThree ? 'bg-white/20 border-white/30' : 'bg-gray-100 border-gray-300'} border flex items-center justify-center text-[10px] font-bold ${isTopThree ? 'text-white' : 'text-navy-900'}`}>
           {getPositionIcon(gerente.position)}
         </div>
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-0">
-          <p className="font-bold text-gray-900 text-[11px] leading-tight">{gerente.name}</p>
-          <p className="text-[9px] text-gray-600 leading-tight">{gerente.diretor}</p>
+          <p className={`font-bold ${getTextColor()} text-[11px] leading-tight`}>{gerente.name}</p>
+          <p className={`text-[9px] ${isTopThree ? 'text-gray-800' : 'text-gray-600'} leading-tight`}>{gerente.diretor}</p>
           {/* Métricas inline */}
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="flex items-center gap-0.5">
-              <Video className="w-2 h-2 text-gold-600" />
-              <span className="text-[9px] text-gold-600 font-bold">{gerente.videos || 0}</span>
+              <Video className={`w-2 h-2 ${getMetricColor()}`} />
+              <span className={`text-[9px] ${getMetricColor()} font-bold`}>{gerente.videos || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-2 h-2 text-gold-600" />
-              <span className="text-[9px] text-gold-600 font-bold">{gerente.visitas || 0}</span>
+              <Building2 className={`w-2 h-2 ${getMetricColor()}`} />
+              <span className={`text-[9px] ${getMetricColor()} font-bold`}>{gerente.visitas || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-2 h-2 text-gold-600" />
-              <span className="text-[9px] text-gold-600 font-bold">{gerente.vendas || 0}</span>
+              <DollarSign className={`w-2 h-2 ${getMetricColor()}`} />
+              <span className={`text-[9px] ${getMetricColor()} font-bold`}>{gerente.vendas || 0}</span>
             </div>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-xs font-bold text-gold-600">{gerente.pontos}</div>
+        <div className={`text-xs font-bold ${getMetricColor()}`}>{gerente.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -367,12 +377,14 @@ const GerenteTableRow = ({ gerente }: any) => {
 
 // Componente para Linha de Diretor na Table
 const DiretorTableRow = ({ diretor }: any) => {
+  const isTopThree = diretor.position <= 3;
+  
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-gold-100 to-gold-200 border-l-4 border-l-gold-500";
-      case 2: return "bg-gradient-to-r from-slate-100 to-slate-200 border-l-4 border-l-slate-400";
-      case 3: return "bg-gradient-to-r from-amber-100 to-amber-200 border-l-4 border-l-amber-600";
-      default: return "hover:bg-white";
+      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600 border-l-4 border-l-yellow-700"; // gold sólido
+      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500 border-l-4 border-l-gray-600"; // silver sólido
+      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700 border-l-4 border-l-amber-800"; // bronze sólido
+      default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
 
@@ -385,35 +397,38 @@ const DiretorTableRow = ({ diretor }: any) => {
     }
   };
 
+  const getMetricColor = () => isTopThree ? "text-white" : "text-navy-900";
+  const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
+
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(diretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className="w-5 h-5 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-[10px] font-bold text-gold-600">
+        <div className={`w-5 h-5 rounded-full ${isTopThree ? 'bg-white/20 border-white/30' : 'bg-gray-100 border-gray-300'} border flex items-center justify-center text-[10px] font-bold ${isTopThree ? 'text-white' : 'text-navy-900'}`}>
           {getPositionIcon(diretor.position)}
         </div>
       </TableCell>
       <TableCell className="py-1">
         <div className="space-y-0">
-          <p className="font-bold text-gray-900 text-[11px] leading-tight">{diretor.name}</p>
+          <p className={`font-bold ${getTextColor()} text-[11px] leading-tight`}>{diretor.name}</p>
           {/* Métricas inline */}
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="flex items-center gap-0.5">
-              <Video className="w-2 h-2 text-gold-600" />
-              <span className="text-[9px] text-gold-600 font-bold">{diretor.videos || 0}</span>
+              <Video className={`w-2 h-2 ${getMetricColor()}`} />
+              <span className={`text-[9px] ${getMetricColor()} font-bold`}>{diretor.videos || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-2 h-2 text-gold-600" />
-              <span className="text-[9px] text-gold-600 font-bold">{diretor.visitas || 0}</span>
+              <Building2 className={`w-2 h-2 ${getMetricColor()}`} />
+              <span className={`text-[9px] ${getMetricColor()} font-bold`}>{diretor.visitas || 0}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-2 h-2 text-gold-600" />
-              <span className="text-[9px] text-gold-600 font-bold">{diretor.vendas || 0}</span>
+              <DollarSign className={`w-2 h-2 ${getMetricColor()}`} />
+              <span className={`text-[9px] ${getMetricColor()} font-bold`}>{diretor.vendas || 0}</span>
             </div>
           </div>
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className="text-xs font-bold text-gold-600">{diretor.pontos}</div>
+        <div className={`text-xs font-bold ${getMetricColor()}`}>{diretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
