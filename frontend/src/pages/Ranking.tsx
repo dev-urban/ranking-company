@@ -71,10 +71,10 @@ export const Ranking: React.FC = () => {
                 className="h-2 bg-gray-200 [&>div]:bg-gradient-to-r [&>div]:from-gold-400 [&>div]:to-gold-600"
               />
               <div className="flex justify-between text-xs text-gray-700">
-                <span className="text-gold-600 font-bold">{data.totalVendas} vendas</span>
+                <span className="text-navy-900 font-bold">{data.totalVendas} vendas</span>
                 <span>{data.metaVendas} vendas (meta)</span>
               </div>
-              <div className="text-center text-sm font-bold text-gold-600">
+              <div className="text-center text-sm font-bold text-navy-900">
                 {data.progressPercentage.toFixed(1)}% da meta atingida
               </div>
             </div>
@@ -259,9 +259,9 @@ const CorretorTableRow = ({ corretor }: any) => {
   
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600 border-l-4 border-l-yellow-700"; // gold sólido
-      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500 border-l-4 border-l-gray-600"; // silver sólido
-      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700 border-l-4 border-l-amber-800"; // bronze sólido
+      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600"; // gold sólido
+      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500"; // silver sólido
+      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700"; // bronze sólido
       default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
@@ -275,7 +275,7 @@ const CorretorTableRow = ({ corretor }: any) => {
     }
   };
 
-  const getMetricColor = () => isTopThree ? "text-white" : "text-navy-900";
+  const getMetricColor = () => "text-navy-900";
   const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
 
   return (
@@ -321,9 +321,9 @@ const GerenteTableRow = ({ gerente }: any) => {
   
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600 border-l-4 border-l-yellow-700"; // gold sólido
-      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500 border-l-4 border-l-gray-600"; // silver sólido
-      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700 border-l-4 border-l-amber-800"; // bronze sólido
+      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600"; // gold sólido
+      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500"; // silver sólido
+      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700"; // bronze sólido
       default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
@@ -337,7 +337,7 @@ const GerenteTableRow = ({ gerente }: any) => {
     }
   };
 
-  const getMetricColor = () => isTopThree ? "text-white" : "text-navy-900";
+  const getMetricColor = () => "text-navy-900";
   const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
 
   return (
@@ -381,9 +381,9 @@ const DiretorTableRow = ({ diretor }: any) => {
   
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600 border-l-4 border-l-yellow-700"; // gold sólido
-      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500 border-l-4 border-l-gray-600"; // silver sólido
-      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700 border-l-4 border-l-amber-800"; // bronze sólido
+      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600"; // gold sólido
+      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500"; // silver sólido
+      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700"; // bronze sólido
       default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
@@ -397,7 +397,7 @@ const DiretorTableRow = ({ diretor }: any) => {
     }
   };
 
-  const getMetricColor = () => isTopThree ? "text-white" : "text-navy-900";
+  const getMetricColor = () => "text-navy-900";
   const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
 
   return (
