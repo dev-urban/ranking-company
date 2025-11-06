@@ -81,6 +81,37 @@ export const Ranking: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <Card className={`bg-white border-gray-200 shadow-lg ${statsGlow ? 'shadow-gold-500/30 shadow-2xl' : ''}`}>
+            <CardHeader className="pb-1">
+              <CardTitle className="text-xs text-gray-900">Total Atingido</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-[#001f3f]">{data.totalVendas}</div>
+              <div className="text-[11px] text-gray-600">vendas</div>
+            </CardContent>
+          </Card>
+          <Card className={`bg-white border-gray-200 shadow-lg ${statsGlow ? 'shadow-gold-500/30 shadow-2xl' : ''}`}>
+            <CardHeader className="pb-1">
+              <CardTitle className="text-xs text-gray-900">Meta Global</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-[#001f3f]">{data.metaVendas}</div>
+              <div className="text-[11px] text-gray-600">vendas</div>
+            </CardContent>
+          </Card>
+          <Card className={`bg-white border-gray-200 shadow-lg ${statsGlow ? 'shadow-gold-500/30 shadow-2xl' : ''}`}>
+            <CardHeader className="pb-1">
+              <CardTitle className="text-xs text-gray-900">Progresso</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold text-[#001f3f]">{data.progressPercentage.toFixed(1)}%</div>
+              <div className="text-[11px] text-gray-600">da meta</div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Main Layout */}
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2">
           {/* Left: Top 10 Corretores */}
@@ -281,7 +312,7 @@ const CorretorTableRow = ({ corretor }: any) => {
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(corretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className={`w-6 h-6 rounded-full ${isTopThree ? 'bg-white/20 border-white/30' : 'bg-gray-100 border-gray-300'} border flex items-center justify-center text-xs font-bold ${isTopThree ? 'text-white' : 'text-navy-900'}`}>
+        <div className={`w-6 h-6 rounded-full bg-[#dde6fc] border border-[#c7d2fe] flex items-center justify-center text-xs font-bold text-[#3e61b4]`}>
           {getPositionIcon(corretor.position)}
         </div>
       </TableCell>
@@ -309,7 +340,7 @@ const CorretorTableRow = ({ corretor }: any) => {
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className={`text-sm font-bold ${getMetricColor()}`}>{corretor.pontos}</div>
+        <div className={`text-sm font-bold text-[#3e61b4]`}>{corretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -343,7 +374,7 @@ const GerenteTableRow = ({ gerente }: any) => {
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(gerente.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className={`w-5 h-5 rounded-full ${isTopThree ? 'bg-white/20 border-white/30' : 'bg-gray-100 border-gray-300'} border flex items-center justify-center text-[10px] font-bold ${isTopThree ? 'text-white' : 'text-navy-900'}`}>
+        <div className={`w-5 h-5 rounded-full bg-[#dde6fc] border border-[#c7d2fe] flex items-center justify-center text-[10px] font-bold text-[#3e61b4]`}>
           {getPositionIcon(gerente.position)}
         </div>
       </TableCell>
@@ -369,7 +400,7 @@ const GerenteTableRow = ({ gerente }: any) => {
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className={`text-xs font-bold ${getMetricColor()}`}>{gerente.pontos}</div>
+        <div className={`text-xs font-bold text-[#3e61b4]`}>{gerente.pontos}</div>
       </TableCell>
     </TableRow>
   );
@@ -403,7 +434,7 @@ const DiretorTableRow = ({ diretor }: any) => {
   return (
     <TableRow className={`border-gray-100 ${getPositionStyles(diretor.position)}`}>
       <TableCell className="w-8 py-1">
-        <div className={`w-5 h-5 rounded-full ${isTopThree ? 'bg-white/20 border-white/30' : 'bg-gray-100 border-gray-300'} border flex items-center justify-center text-[10px] font-bold ${isTopThree ? 'text-white' : 'text-navy-900'}`}>
+        <div className={`w-5 h-5 rounded-full bg-[#dde6fc] border border-[#c7d2fe] flex items-center justify-center text-[10px] font-bold text-[#3e61b4]`}>
           {getPositionIcon(diretor.position)}
         </div>
       </TableCell>
@@ -428,7 +459,7 @@ const DiretorTableRow = ({ diretor }: any) => {
         </div>
       </TableCell>
       <TableCell className="text-right py-1">
-        <div className={`text-xs font-bold ${getMetricColor()}`}>{diretor.pontos}</div>
+        <div className={`text-xs font-bold text-[#3e61b4]`}>{diretor.pontos}</div>
       </TableCell>
     </TableRow>
   );
