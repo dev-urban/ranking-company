@@ -68,13 +68,13 @@ export const Ranking: React.FC = () => {
             <div className="space-y-1">
               <Progress
                 value={data.progressPercentage}
-                className="h-2 bg-gray-200 [&>div]:bg-gradient-to-r [&>div]:from-gold-400 [&>div]:to-gold-600"
+                className="h-2 bg-gray-200 [&>div]:bg-gradient-to-r [&>div]:from-[#e9b005] [&>div]:to-[#e8af06]"
               />
               <div className="flex justify-between text-xs text-gray-700">
-                <span className="text-navy-900 font-bold">{data.totalVendas} vendas</span>
+                <span className="text-[#001f3f] font-bold">{data.totalVendas} vendas</span>
                 <span>{data.metaVendas} vendas (meta)</span>
               </div>
-              <div className="text-center text-sm font-bold text-navy-900">
+              <div className="text-center text-sm font-bold text-[#001f3f]">
                 {data.progressPercentage.toFixed(1)}% da meta atingida
               </div>
             </div>
@@ -259,9 +259,9 @@ const CorretorTableRow = ({ corretor }: any) => {
   
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600"; // gold sólido
-      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500"; // silver sólido
-      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700"; // bronze sólido
+      case 1: return "bg-gradient-to-r from-[#ffd400] to-[#fea701]"; // gold (exato)
+      case 2: return "bg-gradient-to-r from-[#bfbfbf] to-[#a8a8a8]"; // silver (exato)
+      case 3: return "bg-gradient-to-r from-[#cd8030] to-[#b9860b]"; // bronze (exato)
       default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
@@ -275,7 +275,7 @@ const CorretorTableRow = ({ corretor }: any) => {
     }
   };
 
-  const getMetricColor = () => "text-navy-900";
+  const getMetricColor = () => "text-[#001f3f]";
   const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
 
   return (
@@ -321,9 +321,9 @@ const GerenteTableRow = ({ gerente }: any) => {
   
   const getPositionStyles = (position: number) => {
     switch (position) {
-      case 1: return "bg-gradient-to-r from-yellow-400 to-yellow-600"; // gold sólido
-      case 2: return "bg-gradient-to-r from-gray-300 to-gray-500"; // silver sólido
-      case 3: return "bg-gradient-to-r from-orange-400 to-amber-700"; // bronze sólido
+      case 1: return "bg-gradient-to-r from-[#ffd400] to-[#fea701]"; // gold (exato)
+      case 2: return "bg-gradient-to-r from-[#bfbfbf] to-[#a8a8a8]"; // silver (exato)
+      case 3: return "bg-gradient-to-r from-[#cd8030] to-[#b9860b]"; // bronze (exato)
       default: return "bg-gray-100 hover:bg-gray-200";
     }
   };
@@ -337,7 +337,7 @@ const GerenteTableRow = ({ gerente }: any) => {
     }
   };
 
-  const getMetricColor = () => "text-navy-900";
+  const getMetricColor = () => "text-[#001f3f]";
   const getTextColor = () => isTopThree ? "text-gray-900" : "text-gray-900";
 
   return (
