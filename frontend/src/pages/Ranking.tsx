@@ -123,16 +123,16 @@ export const Ranking: React.FC = () => {
 
         {/* Main Layout */}
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2">
-          {/* Left: Top 10 Corretores */}
+          {/* Left: Top 15 Corretores */}
           <div className="lg:col-span-9">
             <Card className="bg-white border-gray-200 shadow-lg h-full">
               <CardHeader className="pb-2 border-b border-gray-200">
                 <CardTitle className="text-base text-gray-900 flex items-center gap-1">
-                  🏆 Top 10 Corretores
+                  🏆 Top 15 Corretores
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="grid grid-cols-1 lg:grid-cols-2">
+                <div className="grid grid-cols-1 lg:grid-cols-3">
                   {/* Primeira Coluna - Top 1-5 */}
                   <div className="border-r border-gray-200">
                     <Table>
@@ -168,7 +168,7 @@ export const Ranking: React.FC = () => {
                   </div>
 
                   {/* Segunda Coluna - Top 6-10 */}
-                  <div>
+                  <div className="border-r border-gray-200">
                     <Table>
                       <TableHeader>
                         <TableRow className="border-gray-200 hover:bg-transparent">
@@ -194,6 +194,40 @@ export const Ranking: React.FC = () => {
                             ))}
                             {Array.from({ length: Math.max(0, 5 - data.topCorretores.slice(5, 10).length) }).map((_, index) => (
                               <CorretorSkeletonRow key={`empty-2-${index}`} />
+                            ))}
+                          </>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Terceira Coluna - Top 11-15 */}
+                  <div>
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-gray-200 hover:bg-transparent">
+                          <TableHead className="text-gray-900 font-bold">#</TableHead>
+                          <TableHead className="text-gray-900 font-bold">Corretor</TableHead>
+                          <TableHead className="text-gray-900 font-bold text-center">Métricas</TableHead>
+                          <TableHead className="text-gray-900 font-bold text-right">Pts</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {skeletonMode ? (
+                          Array.from({ length: 5 }).map((_, index) => (
+                            <TableRow key={`skeleton-3-${index}`} className="border-gray-100">
+                              <TableCell colSpan={4}>
+                                <div className="h-16 bg-gray-200 rounded animate-pulse" />
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          <>
+                            {data.topCorretores.slice(10, 15).map((corretor) => (
+                              <CorretorTableRow key={corretor.position} corretor={corretor} />
+                            ))}
+                            {Array.from({ length: Math.max(0, 5 - data.topCorretores.slice(10, 15).length) }).map((_, index) => (
+                              <CorretorSkeletonRow key={`empty-3-${index}`} />
                             ))}
                           </>
                         )}
