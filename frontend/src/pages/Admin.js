@@ -76,7 +76,7 @@ function Admin() {
     if (value === '') {
       processedValue = '';
     } else {
-      const parsed = parseInt(value, 10);
+      const parsed = parseFloat(value);
       processedValue = isNaN(parsed) ? '' : Math.max(0, parsed);
     }
 
@@ -97,9 +97,9 @@ function Admin() {
 
       const corretor = directors.find(d => d.id === corretorId);
       const metrics = {
-        videos: corretor.metrics.videos === '' ? 0 : parseInt(corretor.metrics.videos) || 0,
-        visitas: corretor.metrics.visitas === '' ? 0 : parseInt(corretor.metrics.visitas) || 0,
-        vendas: corretor.metrics.vendas === '' ? 0 : parseInt(corretor.metrics.vendas) || 0
+        videos: corretor.metrics.videos === '' ? 0 : parseFloat(corretor.metrics.videos) || 0,
+        visitas: corretor.metrics.visitas === '' ? 0 : parseFloat(corretor.metrics.visitas) || 0,
+        vendas: corretor.metrics.vendas === '' ? 0 : parseFloat(corretor.metrics.vendas) || 0
       };
 
       const response = await fetch(`/api/admin/directors/${corretorId}/metrics`, {
@@ -126,9 +126,9 @@ function Admin() {
   };
 
   const calculatePoints = (metrics) => {
-    const videos = metrics.videos === '' ? 0 : parseInt(metrics.videos) || 0;
-    const visitas = metrics.visitas === '' ? 0 : parseInt(metrics.visitas) || 0;
-    const vendas = metrics.vendas === '' ? 0 : parseInt(metrics.vendas) || 0;
+    const videos = metrics.videos === '' ? 0 : parseFloat(metrics.videos) || 0;
+    const visitas = metrics.visitas === '' ? 0 : parseFloat(metrics.visitas) || 0;
+    const vendas = metrics.vendas === '' ? 0 : parseFloat(metrics.vendas) || 0;
 
     const pontosVideos = videos * 10;
     const pontosVisitas = visitas * 20;
@@ -226,6 +226,7 @@ function Admin() {
                           value={corretor.metrics.videos}
                           onChange={(e) => handleMetricChange(corretor.id, 'videos', e.target.value)}
                           min="0"
+                          step="0.5"
                           disabled={isSaving}
                           className="h-10"
                         />
@@ -246,6 +247,7 @@ function Admin() {
                           value={corretor.metrics.visitas}
                           onChange={(e) => handleMetricChange(corretor.id, 'visitas', e.target.value)}
                           min="0"
+                          step="0.5"
                           disabled={isSaving}
                           className="h-10"
                         />
@@ -266,6 +268,7 @@ function Admin() {
                           value={corretor.metrics.vendas}
                           onChange={(e) => handleMetricChange(corretor.id, 'vendas', e.target.value)}
                           min="0"
+                          step="0.5"
                           disabled={isSaving}
                           className="h-10"
                         />

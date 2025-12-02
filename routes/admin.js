@@ -90,9 +90,9 @@ router.put('/directors/:id/metrics', async (req, res) => {
 
     // Atualizar ou criar métricas do corretor
     await CorretorMetrics.updateOrCreate(corretorEmail, {
-      videos: parseInt(videos) || 0,
-      visitas: parseInt(visitas) || 0,
-      vendas: parseInt(vendas) || 0
+      videos: parseFloat(videos) || 0,
+      visitas: parseFloat(visitas) || 0,
+      vendas: parseFloat(vendas) || 0
     }, req.user.email || req.user.username);
 
     res.json({ message: 'Métricas atualizadas com sucesso' });

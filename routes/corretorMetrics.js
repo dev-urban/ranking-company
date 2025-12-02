@@ -23,9 +23,9 @@ router.put('/:email', authMiddleware, async (req, res) => {
     const user = req.user;
 
     const updatedMetrics = await CorretorMetrics.update(email, {
-      videos: parseInt(videos) || 0,
-      visitas: parseInt(visitas) || 0,
-      vendas: parseInt(vendas) || 0
+      videos: parseFloat(videos) || 0,
+      visitas: parseFloat(visitas) || 0,
+      vendas: parseFloat(vendas) || 0
     }, user.email || user.username);
 
     res.json(updatedMetrics);

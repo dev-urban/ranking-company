@@ -78,9 +78,9 @@ class CorretorMetrics {
   static async update(email, data, updatedBy) {
     try {
       const emailKey = email.toLowerCase().trim();
-      const videos = parseInt(data.videos) || 0;
-      const visitas = parseInt(data.visitas) || 0;
-      const vendas = parseInt(data.vendas) || 0;
+      const videos = parseFloat(data.videos) || 0;
+      const visitas = parseFloat(data.visitas) || 0;
+      const vendas = parseFloat(data.vendas) || 0;
       const pontos = await this.calculatePoints({ videos, visitas, vendas });
 
       // INSERT ON DUPLICATE KEY UPDATE para criar ou atualizar

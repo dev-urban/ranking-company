@@ -98,7 +98,7 @@ function Dashboard() {
     if (value === '') {
       processedValue = '';
     } else {
-      const parsed = parseInt(value, 10);
+      const parsed = parseFloat(value);
       processedValue = isNaN(parsed) ? '' : Math.max(0, parsed);
     }
 
@@ -122,9 +122,9 @@ function Dashboard() {
       // Salvar todos os corretores em paralelo
       const savePromises = corretores.map(async (corretor) => {
         const metrics = {
-          videos: corretor.metrics.videos === '' ? 0 : parseInt(corretor.metrics.videos) || 0,
-          visitas: corretor.metrics.visitas === '' ? 0 : parseInt(corretor.metrics.visitas) || 0,
-          vendas: corretor.metrics.vendas === '' ? 0 : parseInt(corretor.metrics.vendas) || 0
+          videos: corretor.metrics.videos === '' ? 0 : parseFloat(corretor.metrics.videos) || 0,
+          visitas: corretor.metrics.visitas === '' ? 0 : parseFloat(corretor.metrics.visitas) || 0,
+          vendas: corretor.metrics.vendas === '' ? 0 : parseFloat(corretor.metrics.vendas) || 0
         };
 
         const response = await fetch(`${API_URL}/corretor-metrics/${corretor.email}`, {
@@ -314,6 +314,7 @@ function Dashboard() {
                                   value={corretor.metrics.videos}
                                   onChange={(e) => handleMetricChange(corretor.email, 'videos', e.target.value)}
                                   min="0"
+                                  step="0.5"
                                   disabled={saving}
                                   className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
                                 />
@@ -329,6 +330,7 @@ function Dashboard() {
                                   value={corretor.metrics.visitas}
                                   onChange={(e) => handleMetricChange(corretor.email, 'visitas', e.target.value)}
                                   min="0"
+                                  step="0.5"
                                   disabled={saving}
                                   className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
                                 />
@@ -344,6 +346,7 @@ function Dashboard() {
                                   value={corretor.metrics.vendas}
                                   onChange={(e) => handleMetricChange(corretor.email, 'vendas', e.target.value)}
                                   min="0"
+                                  step="0.5"
                                   disabled={saving}
                                   className="h-8 w-20 text-center bg-black border-orange-500/30 text-white"
                                 />
