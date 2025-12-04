@@ -11,14 +11,15 @@ class CorretorMetrics {
       console.log(`📊 [CorretorMetrics] Found ${rows.length} rows in corretor_metrics table`);
 
       // Converter para formato de objeto com email como chave (compatibilidade)
+      // IMPORTANTE: Converter valores DECIMAL do MySQL para números JS (podem vir como strings)
       const metrics = {};
       rows.forEach(row => {
         const emailKey = row.email.toLowerCase().trim();
         metrics[emailKey] = {
-          videos: row.videos,
-          visitas: row.visitas,
-          vendas: row.vendas,
-          pontos: row.pontos,
+          videos: parseFloat(row.videos) || 0,
+          visitas: parseFloat(row.visitas) || 0,
+          vendas: parseFloat(row.vendas) || 0,
+          pontos: parseFloat(row.pontos) || 0,
           lastUpdate: row.last_update,
           updatedBy: row.updated_by
         };
@@ -44,11 +45,12 @@ class CorretorMetrics {
       );
 
       if (rows.length > 0) {
+        // Converter valores DECIMAL do MySQL para números JS (podem vir como strings)
         return {
-          videos: rows[0].videos,
-          visitas: rows[0].visitas,
-          vendas: rows[0].vendas,
-          pontos: rows[0].pontos,
+          videos: parseFloat(rows[0].videos) || 0,
+          visitas: parseFloat(rows[0].visitas) || 0,
+          vendas: parseFloat(rows[0].vendas) || 0,
+          pontos: parseFloat(rows[0].pontos) || 0,
           lastUpdate: rows[0].last_update,
           updatedBy: rows[0].updated_by
         };

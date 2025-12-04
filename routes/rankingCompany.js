@@ -110,9 +110,10 @@ const calculateRankingData = async () => {
       };
       
       if (corretorPoints[emailKey]) {
-        corretorPoints[emailKey].videos = metrics.videos || 0;
-        corretorPoints[emailKey].visitas = metrics.visitas || 0;
-        corretorPoints[emailKey].vendas = metrics.vendas || 0;
+        // Garantir conversão para número (valores DECIMAL podem vir como string)
+        corretorPoints[emailKey].videos = parseFloat(metrics.videos) || 0;
+        corretorPoints[emailKey].visitas = parseFloat(metrics.visitas) || 0;
+        corretorPoints[emailKey].vendas = parseFloat(metrics.vendas) || 0;
         
         // Calcular pontos totais
         corretorPoints[emailKey].pontos = 
