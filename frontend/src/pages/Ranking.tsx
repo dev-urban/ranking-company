@@ -67,7 +67,7 @@ export const Ranking: React.FC = () => {
             </h3>
             <div className="space-y-1">
               <Progress
-                value={data.progressPercentage}
+                value={data.progressPercentage ?? 0}
                 className="h-2 bg-gray-200 [&>div]:bg-gradient-to-r [&>div]:from-[#e9b005] [&>div]:to-[#e8af06]"
               />
               <div className="flex justify-between text-xs text-gray-700">
@@ -75,7 +75,7 @@ export const Ranking: React.FC = () => {
                 <span>{data.metaVendas} vendas (meta)</span>
               </div>
               <div className="text-center text-sm font-bold text-[#001f3f]">
-                {data.progressPercentage.toFixed(1)}% da meta atingida
+                {(data.progressPercentage ?? 0).toFixed(1)}% da meta atingida
               </div>
             </div>
           </CardContent>
@@ -112,7 +112,7 @@ export const Ranking: React.FC = () => {
               <CardTitle className="text-[11px] text-gray-900">Progresso</CardTitle>
             </CardHeader>
             <CardContent className="py-1 px-2">
-              <div className="text-xl font-bold text-[#001f3f]">{data.progressPercentage.toFixed(1)}%</div>
+              <div className="text-xl font-bold text-[#001f3f]">{(data.progressPercentage ?? 0).toFixed(1)}%</div>
               <div className="text-[10px] text-gray-600 leading-none">da meta</div>
               <div className="absolute top-2 right-2 w-6 h-6 rounded-md bg-[#dde6fc] flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 text-[#3e61b4]" />
